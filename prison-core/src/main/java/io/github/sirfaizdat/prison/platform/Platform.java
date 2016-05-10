@@ -18,6 +18,11 @@
 
 package io.github.sirfaizdat.prison.platform;
 
+import io.github.sirfaizdat.prison.platform.interfaces.Player;
+import io.github.sirfaizdat.prison.platform.interfaces.World;
+
+import java.util.UUID;
+
 /**
  * A platform is a server software which implements the necessary interfaces which Prison needs.
  * An example of a platform is Spigot, which has a radically different API than, say, Sponge.
@@ -37,5 +42,26 @@ public interface Platform {
      * @return The {@link Configuration} object.
      */
     Configuration getConfiguration();
+
+    /**
+     * Returns a world from the server.
+     * @param name The name of the world. This is not case sensitive.
+     * @return The {@link World}, or null if the world doesn't exist.
+     */
+    World getWorld(String name);
+
+    /**
+     * Returns a player from the server.
+     * @param name The name of the player. This is case sensitive.
+     * @return The {@link Player}, or null if the player is not online.
+     */
+    Player getPlayer(String name);
+
+    /**
+     * Returns a player from the server.
+     * @param uid The player's unique ID.
+     * @return The {@link Player}, or null if the player is not online.
+     */
+    Player getPlayer(UUID uid);
 
 }

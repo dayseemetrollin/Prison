@@ -106,21 +106,35 @@ public class Location {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof Location)) return false;
-        Location loc = (Location) obj;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Location)) return false;
 
-        // Since worlds may be null, we have to make sure both the object and this have null worlds, or else they're not equal
-        boolean worldsEqual;
-        if(loc.getWorld() == null && getWorld() == null) worldsEqual = true;
-        else worldsEqual = loc.getWorld().equals(getWorld());
+        Location location = (Location) o;
 
-        return worldsEqual && loc.getX() == getX() && loc.getY() == getY() && loc.getZ() == getZ() && loc.getPitch() == getPitch() && loc.getYaw() == loc.getYaw();
+        if (Double.compare(location.x, x) != 0) return false;
+        if (Double.compare(location.y, y) != 0) return false;
+        if (Double.compare(location.z, z) != 0) return false;
+        if (Float.compare(location.pitch, pitch) != 0) return false;
+        if (Float.compare(location.yaw, yaw) != 0) return false;
+        return world != null ? world.equals(location.world) : location.world == null;
+
     }
 
     @Override
     public int hashCode() {
-        return (int) ((getWorld() == null ? 1 : getWorld().getName().hashCode()) + getX() + getY() + getZ() + getPitch() + getYaw());
+        int result;
+        long temp;
+        result = world != null ? world.hashCode() : 0;
+        temp = Double.doubleToLongBits(x);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(z);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (pitch != +0.0f ? Float.floatToIntBits(pitch) : 0);
+        result = 31 * result + (yaw != +0.0f ? Float.floatToIntBits(yaw) : 0);
+        return result;
     }
 
 }
