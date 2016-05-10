@@ -19,14 +19,14 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="prison-core_main" target="1.5" />
-      <module name="prison-core_test" target="1.5" />
-      <module name="prison-forge_main" target="1.5" />
-      <module name="prison-forge_test" target="1.5" />
-      <module name="prison-spigot_main" target="1.5" />
-      <module name="prison-spigot_test" target="1.5" />
-      <module name="prison-sponge_main" target="1.5" />
-      <module name="prison-sponge_test" target="1.5" />
+      <module name="prison-core_main" target="1.8" />
+      <module name="prison-core_test" target="1.8" />
+      <module name="prison-forge_main" target="1.8" />
+      <module name="prison-forge_test" target="1.8" />
+      <module name="prison-spigot_main" target="1.8" />
+      <module name="prison-spigot_test" target="1.8" />
+      <module name="prison-sponge_main" target="1.8" />
+      <module name="prison-sponge_test" target="1.8" />
       <module name="prison_main" target="1.5" />
       <module name="prison_test" target="1.5" />
     </bytecodeTargetLevel>

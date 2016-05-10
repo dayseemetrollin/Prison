@@ -16,11 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+package io.github.sirfaizdat.prison;
 
-dependencies {
-    testCompile 'com.googlecode.json-simple:json-simple:1.1.1'
+import io.github.sirfaizdat.prison.platform.Platform;
+
+/**
+ * Stores instances for the rest of prison-core to use.
+ * Each implementation should instantiate this upon their enable, providing their {@link Platform} implementation.
+ *
+ * @author SirFaizdat
+ * @since 3.0
+ */
+public class Prison {
+
+    public static Prison instance;
+    private Platform platform;
+
+    public Prison(Platform platform) {
+        instance = this;
+        this.platform = platform;
+    }
+
+    public Platform getPlatform() {
+        return platform;
+    }
+
 }
-
-build.dependsOn(shadowJar)

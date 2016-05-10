@@ -15,8 +15,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/prison-sponge/prison-sponge.iml" filepath="$PROJECT_DIR$/.idea/modules/prison-sponge/prison-sponge.iml" group="prison-sponge" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/prison-sponge/prison-sponge_main.iml" filepath="$PROJECT_DIR$/.idea/modules/prison-sponge/prison-sponge_main.iml" group="prison-sponge" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/prison-sponge/prison-sponge_test.iml" filepath="$PROJECT_DIR$/.idea/modules/prison-sponge/prison-sponge_test.iml" group="prison-sponge" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/prison_main.iml" filepath="$PROJECT_DIR$/.idea/modules/prison_main.iml" group="prison" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/prison_test.iml" filepath="$PROJECT_DIR$/.idea/modules/prison_test.iml" group="prison" />
     </modules>
   </component>
 </project>
