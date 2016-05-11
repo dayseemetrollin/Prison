@@ -75,4 +75,9 @@ public interface EconomyIntegration {
         return hasBalance(player, player.getLocation().getWorld(), amount);
     }
 
+    /**
+     * @return The name of the plugin that is providing the economy.
+     */
+    String getPluginName();
+
 }

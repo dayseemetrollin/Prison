@@ -36,6 +36,7 @@ public class EconomyIntegrationTest {
         assertFalse(eco.hasBalance(null, null, 24.031));
     }
 
+    // Not at all what the implementations should do, by the way.
     private class TestEconomyIntegration implements EconomyIntegration {
 
         private double balance;
@@ -59,6 +60,10 @@ public class EconomyIntegrationTest {
             this.balance = amount;
         }
 
+        @Override
+        public String getPluginName() {
+            return "TestPlugin";
+        }
     }
 
 }

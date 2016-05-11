@@ -89,4 +89,9 @@ public interface PermissionIntegration {
      */
     void setRank(Player player, String rank, World world);
 
+    /**
+     * @return The name of the plugin that is providing the permissions.
+     */
+    String getPluginName();
+
 }
