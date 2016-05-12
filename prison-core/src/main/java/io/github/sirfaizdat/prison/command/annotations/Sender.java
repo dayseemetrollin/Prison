@@ -16,35 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison;
+package io.github.sirfaizdat.prison.command.annotations;
 
-import io.github.sirfaizdat.prison.command.CommandManager;
-import io.github.sirfaizdat.prison.platform.Platform;
+import com.sk89q.intake.parametric.annotation.Classifier;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * Stores instances for the rest of prison-core to use.
- * Each implementation should instantiate this upon their enable, providing their {@link Platform} implementation.
+ * Denotes the argument that is the sender.
  *
  * @author SirFaizdat
  * @since 3.0
  */
-public class Prison {
-
-    public static Prison instance;
-    private Platform platform;
-    private CommandManager commandManager;
-
-    public Prison(Platform platform) {
-        instance = this;
-        this.platform = platform;
-        this.commandManager = new CommandManager();
-    }
-
-    public Platform getPlatform() {
-        return platform;
-    }
-
-    public CommandManager getCommandManager() {
-        return commandManager;
-    }
+@Classifier
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Sender {
 }

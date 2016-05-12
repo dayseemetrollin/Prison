@@ -18,9 +18,17 @@
 
 package io.github.sirfaizdat.prison.platform;
 
+import com.google.common.collect.ImmutableList;
+import com.sk89q.intake.CommandException;
+import com.sk89q.intake.InvocationCommandException;
+import com.sk89q.intake.argument.Namespace;
+import com.sk89q.intake.util.auth.AuthorizationException;
+import io.github.sirfaizdat.prison.Prison;
+import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
 import io.github.sirfaizdat.prison.platform.interfaces.Player;
 import io.github.sirfaizdat.prison.platform.interfaces.World;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -58,10 +66,32 @@ public interface Platform {
     Player getPlayer(String name);
 
     /**
+     * Returns a list of all online players.
+     * @return The list
+     */
+    List<Player> getOnlinePlayers();
+
+    /**
      * Returns a player from the server.
      * @param uid The player's unique ID.
      * @return The {@link Player}, or null if the player is not online.
      */
     Player getPlayer(UUID uid);
+
+    default void dispatchCommand(CommandSender sender, String label, String[] args) {
+        Namespace namespace = new Namespace();
+        namespace.put("sender", sender);
+
+        // TODO Proper messages
+        try {
+            Prison.instance.getCommandManager().getDispatcher().call(label + " " + String.join(" ", args), namespace, ImmutableList.of());
+        } catch (CommandException e) {
+            sender.sendMessage(e.getMessage());
+        } catch (InvocationCommandException e) {
+            sender.sendMessage(e.getMessage());
+        } catch (AuthorizationException e) {
+            sender.sendMessage(e.getMessage());
+        }
+    }
 
 }

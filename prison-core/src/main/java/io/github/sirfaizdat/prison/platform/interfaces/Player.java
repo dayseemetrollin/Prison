@@ -29,12 +29,7 @@ import java.util.UUID;
  * @author SirFaizdat
  * @since 3.0
  */
-public interface Player {
-
-    /**
-     * @return The player's name.
-     */
-    String getName();
+public interface Player extends CommandSender {
 
     /**
      * The prefered method of identifying players. Unique IDs never change, while player names do.

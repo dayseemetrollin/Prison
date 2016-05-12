@@ -16,35 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison;
+package io.github.sirfaizdat.prison.command.providers;
 
-import io.github.sirfaizdat.prison.command.CommandManager;
-import io.github.sirfaizdat.prison.platform.Platform;
+import com.sk89q.intake.argument.ArgumentException;
+import com.sk89q.intake.argument.CommandArgs;
+import com.sk89q.intake.parametric.Provider;
+import com.sk89q.intake.parametric.ProvisionException;
+
+import javax.annotation.Nullable;
+import java.lang.annotation.Annotation;
+import java.util.List;
 
 /**
- * Stores instances for the rest of prison-core to use.
- * Each implementation should instantiate this upon their enable, providing their {@link Platform} implementation.
  *
  * @author SirFaizdat
  * @since 3.0
  */
-public class Prison {
+public class StringProvider implements Provider<String> {
 
-    public static Prison instance;
-    private Platform platform;
-    private CommandManager commandManager;
-
-    public Prison(Platform platform) {
-        instance = this;
-        this.platform = platform;
-        this.commandManager = new CommandManager();
+    @Override
+    public boolean isProvided() {
+        return false;
     }
 
-    public Platform getPlatform() {
-        return platform;
+    @Nullable
+    @Override
+    public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {
+        return arguments.next();
     }
 
-    public CommandManager getCommandManager() {
-        return commandManager;
+    @Override
+    public List<String> getSuggestions(String prefix) {
+        return null;
     }
 }
