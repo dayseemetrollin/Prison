@@ -1,0 +1,6 @@
+name: Prison
+main: io.github.sirfaizdat.prison.spigot.SpigotPrison
+version: "${version}"
+commands:
+  test:
+    description: "A test command, for the sake of testing."
