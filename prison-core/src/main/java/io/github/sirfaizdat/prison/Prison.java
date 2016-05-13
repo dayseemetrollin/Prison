@@ -19,6 +19,7 @@
 package io.github.sirfaizdat.prison;
 
 import io.github.sirfaizdat.prison.command.CommandManager;
+import io.github.sirfaizdat.prison.module.ModuleManager;
 import io.github.sirfaizdat.prison.platform.Platform;
 
 /**
@@ -33,11 +34,13 @@ public class Prison {
     public static Prison instance;
     private Platform platform;
     private CommandManager commandManager;
+    private ModuleManager moduleManager;
 
     public Prison(Platform platform) {
         instance = this;
         this.platform = platform;
         this.commandManager = new CommandManager();
+        this.moduleManager = new ModuleManager();
     }
 
     public Platform getPlatform() {
@@ -47,4 +50,9 @@ public class Prison {
     public CommandManager getCommandManager() {
         return commandManager;
     }
+
+    public ModuleManager getModuleManager() {
+        return moduleManager;
+    }
+
 }

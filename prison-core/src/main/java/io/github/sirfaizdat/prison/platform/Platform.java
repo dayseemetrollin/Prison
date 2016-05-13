@@ -78,18 +78,20 @@ public interface Platform {
      */
     Player getPlayer(UUID uid);
 
-    default void dispatchCommand(CommandSender sender, String label, String[] args) {
+    /**
+     * Run a command.
+     * @param sender The {@link CommandSender}. If it's a player, provide a {@link Player} object.
+     * @param label The command that the user typed in.
+     * @param args The command's arguments.
+     */
+    default void dispatchCommand(CommandSender sender, String label, CharSequence[] args) {
         Namespace namespace = new Namespace();
         namespace.put("sender", sender);
 
         // TODO Proper messages
         try {
             Prison.instance.getCommandManager().getDispatcher().call(label + " " + String.join(" ", args), namespace, ImmutableList.of());
-        } catch (CommandException e) {
-            sender.sendMessage(e.getMessage());
-        } catch (InvocationCommandException e) {
-            sender.sendMessage(e.getMessage());
-        } catch (AuthorizationException e) {
+        } catch (CommandException | InvocationCommandException | AuthorizationException e) {
             sender.sendMessage(e.getMessage());
         }
     }

@@ -37,6 +37,8 @@ import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
  */
 public class CommandManager {
 
+    // TODO subcommand support
+
     private Injector injector;
     private ParametricBuilder parametricBuilder;
     private Dispatcher dispatcher;
@@ -70,7 +72,7 @@ public class CommandManager {
 
     /**
      * Returns the {@link Dispatcher} which is responsible for running the commands.
-     * Note that the {@link Platform} contains a {@link Platform#dispatchCommand(CommandSender, String, String[])} method
+     * Note that the {@link Platform} contains a {@link Platform#dispatchCommand(CommandSender, String, CharSequence[])} method
      * which handles the dirty logic for you, so use it to call commands.
      *
      * @return The {@link Dispatcher}, for calling commands.
