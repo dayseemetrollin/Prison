@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.command.annotations;
+package io.github.sirfaizdat.prison.command.modules.prison;
 
 import com.sk89q.intake.parametric.annotation.Classifier;
 
@@ -24,12 +24,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Denotes the argument that is the sender.
- *
  * @author SirFaizdat
- * @since 3.0
  */
-@Classifier
 @Retention(RetentionPolicy.RUNTIME)
+@Classifier
 public @interface Sender {
 }

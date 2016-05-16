@@ -4,3 +4,5 @@ version: "${version}"
 commands:
   test:
     description: "A test command, for the sake of testing."
+  mines:
+    description: "Create some mines!"

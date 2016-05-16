@@ -18,67 +18,74 @@
 
 package io.github.sirfaizdat.prison.command;
 
+import com.sk89q.intake.Command;
 import com.sk89q.intake.Intake;
 import com.sk89q.intake.dispatcher.Dispatcher;
-import com.sk89q.intake.dispatcher.SimpleDispatcher;
+import com.sk89q.intake.fluent.CommandGraph;
 import com.sk89q.intake.parametric.Injector;
 import com.sk89q.intake.parametric.Module;
 import com.sk89q.intake.parametric.ParametricBuilder;
-import io.github.sirfaizdat.prison.platform.Platform;
-import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
+import com.sk89q.intake.parametric.provider.PrimitivesModule;
+import io.github.sirfaizdat.prison.command.modules.prison.PrisonModule;
 
 /**
- * Loads up all the commands and argument parsers (providers).
- * Prison makes use of sk89q's Intake library, allowing for simple command declarations
- * using methods. See the CommandTest for examples.
+ * Sets up sk89q's Intake library.
  *
  * @author SirFaizdat
  * @since 3.0
  */
 public class CommandManager {
 
-    // TODO subcommand support
-
-    private Injector injector;
-    private ParametricBuilder parametricBuilder;
-    private Dispatcher dispatcher;
+    private CommandGraph commandGraph;
 
     public CommandManager() {
-        injector = Intake.createInjector();
-        injector.install(new DefaultModule());
+        Injector injector = Intake.createInjector();
+        injector.install(new PrimitivesModule());
+        injector.install(new PrisonModule());
 
-        parametricBuilder = new ParametricBuilder(injector);
-        dispatcher = new SimpleDispatcher();
-        parametricBuilder.setAuthorizer((namespace, permission) -> namespace.containsKey("sender") && ((CommandSender) namespace.get("sender")).hasPermission(permission));
+        ParametricBuilder builder = new ParametricBuilder(injector);
+        builder.setAuthorizer(new CommandAuthorizer());
+
+        commandGraph = new CommandGraph().builder(builder);
     }
 
     /**
-     * Install a new module, which binds providers to their respective classes/annotations.
+     * Registers all {@link Command} annotated methods in an object as commands
+     * under a root command.
      *
-     * @param module The {@link Module} implementation.
+     * @param root The root command. For example, if you want to create commands under the command "/mines", the root would be "mines".
+     * @param commands The object containing the commands to register.
      */
-    public void installModule(Module module) {
-        injector.install(module);
+    public void registerCommands(String root, Object commands) {
+        commandGraph.commands().group(root).registerMethods(commands);
     }
 
     /**
-     * Register all commands within an object.
+     * Registers all {@link Command} annotated methods in an object as commands under a
+     * sub root command under a root command.
      *
-     * @param obj The object containing the annotated command methods.
+     * @param root The root command. For example, if you want to create commands under the command "/mines settings", the root would be "mines".
+     * @param subroot The sub root command. For example, if you want to create commands under the command "/mines settings", the sub root would be "settings".
+     * @param commands The object containing the commands to register.
      */
-    public void registerCommands(Object obj) {
-        parametricBuilder.registerMethodsAsCommands(dispatcher, obj);
+    public void registerCommands(String root, String subroot, Object commands) {
+        commandGraph.commands().group(root).group(subroot).registerMethods(commands);
     }
 
     /**
-     * Returns the {@link Dispatcher} which is responsible for running the commands.
-     * Note that the {@link Platform} contains a {@link Platform#dispatchCommand(CommandSender, String, CharSequence[])} method
-     * which handles the dirty logic for you, so use it to call commands.
-     *
-     * @return The {@link Dispatcher}, for calling commands.
+     * Registers all {@link Command} annotated methods in an object as commands at the top level.
+     * @param commands The object containing the commands to register.
      */
+    public void registerCommands(Object commands) {
+        commandGraph.commands().registerMethods(commands);
+    }
+
+    public void registerModule(Module m) {
+        commandGraph.getBuilder().getInjector().install(m);
+    }
+
     public Dispatcher getDispatcher() {
-        return dispatcher;
+        return commandGraph.getDispatcher();
     }
 
 }

@@ -16,28 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.command.providers;
+package io.github.sirfaizdat.prison.command.modules.prison;
 
-import com.sk89q.intake.OptionType;
-import com.sk89q.intake.Parameter;
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.ArgumentParseException;
 import com.sk89q.intake.argument.CommandArgs;
-import com.sk89q.intake.argument.MissingArgumentException;
 import com.sk89q.intake.parametric.Provider;
 import com.sk89q.intake.parametric.ProvisionException;
+import io.github.sirfaizdat.prison.Prison;
+import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
+import io.github.sirfaizdat.prison.platform.interfaces.Player;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * Provider for wildcards.
- *
  * @author SirFaizdat
- * @since 3.0
  */
-public class WildcardProvider implements Provider<String> {
+public class PlayerProvider implements Provider<Player> {
 
     @Override
     public boolean isProvided() {
@@ -46,16 +45,16 @@ public class WildcardProvider implements Provider<String> {
 
     @Nullable
     @Override
-    public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {
-        if (!arguments.hasNext()) throw new MissingArgumentException();
-        StringBuilder builder = new StringBuilder();
-        while (arguments.hasNext()) builder.append(arguments.next()).append(" ");
-        return builder.toString();
+    public Player get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {
+        String name = arguments.next();
+        Player player = Prison.instance.getPlatform().getPlayer(name);
+        if(player == null) throw new ArgumentParseException("Player " + name + " does not exist or is not online.");
+        return player;
     }
 
     @Override
     public List<String> getSuggestions(String prefix) {
-        return null;
+        return Prison.instance.getPlatform().getOnlinePlayers().stream().filter(player -> player.getName().toLowerCase().startsWith(prefix.toLowerCase())).map(CommandSender::getName).collect(Collectors.toList());
     }
 
 }

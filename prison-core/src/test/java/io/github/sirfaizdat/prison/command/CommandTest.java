@@ -20,9 +20,9 @@ package io.github.sirfaizdat.prison.command;
 
 import com.sk89q.intake.Command;
 import com.sk89q.intake.Require;
+import com.sk89q.intake.parametric.annotation.Text;
 import io.github.sirfaizdat.prison.Prison;
-import io.github.sirfaizdat.prison.command.annotations.Sender;
-import io.github.sirfaizdat.prison.command.annotations.Wildcard;
+import io.github.sirfaizdat.prison.command.modules.prison.Sender;
 import io.github.sirfaizdat.prison.platform.Configuration;
 import io.github.sirfaizdat.prison.platform.Location;
 import io.github.sirfaizdat.prison.platform.Platform;
@@ -81,24 +81,24 @@ public class CommandTest {
     public class TestCommands {
 
         @Command(aliases = "test", desc = "Say hi to the sender")
-        public void testCommand(@Sender CommandSender sender) {
+        public void testCommand(CommandSender sender) {
             sender.sendMessage("Hi!");
         }
 
         @Command(aliases = "testPlayer", desc = "Test the player sender")
-        public void testPlayerCommand(@Sender Player sender) {
+        public void testPlayerCommand(@Sender  Player sender) {
             sender.sendMessage("Player's hi!");
         }
 
         @Command(aliases = "testArgs", desc = "Say something to another player.")
-        public void testArgsCommand(@Sender Player sender, Player who, @Wildcard String message) {
+        public void testArgsCommand(@Sender Player sender, Player who, @Text String message) {
             who.sendMessage(String.format("%s -> %s: %s", sender.getName(), "you", message));
             sender.sendMessage(String.format("%s -> %s: %s", "you", sender.getName(), message));
         }
 
         @Command(aliases = "testPerms", desc = "Deny access because we're meanies.")
         @Require("permission.test")
-        public void testPermsCommand(@Sender CommandSender sender) {
+        public void testPermsCommand(CommandSender sender) {
         }
 
     }

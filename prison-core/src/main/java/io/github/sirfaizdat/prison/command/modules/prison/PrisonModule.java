@@ -16,30 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.command;
+package io.github.sirfaizdat.prison.command.modules.prison;
 
-import com.sk89q.intake.parametric.AbstractModule;
-import io.github.sirfaizdat.prison.command.annotations.Sender;
-import io.github.sirfaizdat.prison.command.annotations.Wildcard;
-import io.github.sirfaizdat.prison.command.providers.*;
+import com.sk89q.intake.parametric.Module;
+import com.sk89q.intake.parametric.binder.Binder;
 import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
 import io.github.sirfaizdat.prison.platform.interfaces.Player;
 
 /**
- * Binds all default providers.
- *
  * @author SirFaizdat
- * @since 3.0
  */
-public class DefaultModule extends AbstractModule {
+public class PrisonModule implements Module {
 
     @Override
-    protected void configure() {
-        bind(Player.class).annotatedWith(Sender.class).toProvider(new PlayerSenderProvider());
-        bind(CommandSender.class).annotatedWith(Sender.class).toProvider(new CommandSenderProvider());
-        bind(Player.class).toProvider(new PlayerProvider());
-        bind(String.class).toProvider(new StringProvider());
-        bind(String.class).annotatedWith(Wildcard.class).toProvider(new WildcardProvider());
+    public void configure(Binder binder) {
+        binder.bind(CommandSender.class).toProvider(new CommandSenderProvider());
+        binder.bind(Player.class).toProvider(new PlayerProvider());
+        binder.bind(Player.class).annotatedWith(Sender.class).toProvider(new PlayerSenderProvider());
     }
 
 }

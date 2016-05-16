@@ -20,7 +20,6 @@ package io.github.sirfaizdat.prison.spigot;
 
 import com.sk89q.intake.Command;
 import com.sk89q.intake.Require;
-import io.github.sirfaizdat.prison.command.annotations.Sender;
 import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
 
 /**
@@ -30,7 +29,7 @@ public class SpigotCommands {
 
     @Command(aliases = "test", desc = "A test command, for the sake of testing.")
     @Require(value = "prison.test")
-    public void testCommand(@Sender CommandSender sender) {
+    public void testCommand(CommandSender sender) {
         sender.sendMessage("&9You are a baby blue!");
     }
 

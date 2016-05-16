@@ -16,27 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.command.providers;
+package io.github.sirfaizdat.prison.command.modules.prison;
 
-import com.google.common.collect.ImmutableList;
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.parametric.Provider;
 import com.sk89q.intake.parametric.ProvisionException;
 import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
-import io.github.sirfaizdat.prison.platform.interfaces.Player;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
 /**
- * Provides Player instances.
- *
  * @author SirFaizdat
- * @since 3.0
  */
-public class PlayerSenderProvider implements Provider<Player> {
+public class CommandSenderProvider implements Provider<CommandSender> {
 
     @Override
     public boolean isProvided() {
@@ -45,14 +40,15 @@ public class PlayerSenderProvider implements Provider<Player> {
 
     @Nullable
     @Override
-    public Player get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {
-        Player sender = (Player) arguments.getNamespace().get("sender");
-        if(sender != null) return sender;
-        else throw new ProvisionException("Sender was not set on namespace.");
+    public CommandSender get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {
+        CommandSender sender = (CommandSender) arguments.getNamespace().get("sender");
+        if(sender == null) throw new ProvisionException("No sender was provided.");
+        return sender;
     }
 
     @Override
     public List<String> getSuggestions(String prefix) {
-        return ImmutableList.of();
+        return null;
     }
+
 }

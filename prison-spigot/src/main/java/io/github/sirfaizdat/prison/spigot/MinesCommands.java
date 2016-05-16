@@ -16,37 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.command.providers;
+package io.github.sirfaizdat.prison.spigot;
 
-import com.sk89q.intake.argument.ArgumentException;
-import com.sk89q.intake.argument.CommandArgs;
-import com.sk89q.intake.parametric.Provider;
-import com.sk89q.intake.parametric.ProvisionException;
-
-import javax.annotation.Nullable;
-import java.lang.annotation.Annotation;
-import java.util.List;
+import com.sk89q.intake.Command;
+import com.sk89q.intake.Require;
+import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
 
 /**
- *
  * @author SirFaizdat
- * @since 3.0
  */
-public class StringProvider implements Provider<String> {
+public class MinesCommands {
 
-    @Override
-    public boolean isProvided() {
-        return false;
+    @Command(aliases = "create", desc = "Create a new mine")
+    @Require("prison.mine.create")
+    public void createCommand(CommandSender sender, String name) {
+        sender.sendMessage("Nope! You can't do that yet. " + name + " will have to wait, Mr. " + sender.getName());
     }
 
-    @Nullable
-    @Override
-    public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {
-        return arguments.next();
+    @Command(aliases = "delete", desc = "Delete a mine")
+    @Require("prison.mine.delete")
+    public void deleteCommand(CommandSender sender, String name) {
+        sender.sendMessage("Nope! You can't do that yet. " + name + " is spared, Mr. " + sender.getName());
     }
 
-    @Override
-    public List<String> getSuggestions(String prefix) {
-        return null;
-    }
 }

@@ -16,20 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.command.annotations;
+package io.github.sirfaizdat.prison.command;
 
-import com.sk89q.intake.parametric.annotation.Classifier;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import com.sk89q.intake.argument.Namespace;
+import com.sk89q.intake.util.auth.Authorizer;
+import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
 
 /**
- * Puts the rest of the arguments into one string, which allows spaces in the command.
- *
+ * Determines whether a user is allowed to perform a command.
  * @author SirFaizdat
  * @since 3.0
  */
-@Classifier
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Wildcard {
+public class CommandAuthorizer implements Authorizer {
+
+    @Override
+    public boolean testPermission(Namespace namespace, String permission) {
+        CommandSender sender = (CommandSender) namespace.get("sender");
+        if (sender == null) return false;
+        return sender.hasPermission(permission);
+    }
+
 }

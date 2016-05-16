@@ -45,6 +45,7 @@ public class SpigotPrison extends JavaPlugin implements Platform {
     public void onEnable() {
         prison = new Prison(this);
         prison.getCommandManager().registerCommands(new SpigotCommands());
+        prison.getCommandManager().registerCommands("mines", new MinesCommands());
     }
 
     @Override
