@@ -41,6 +41,8 @@ public class Prison {
         this.platform = platform;
         this.commandManager = new CommandManager();
         this.moduleManager = new ModuleManager();
+
+        this.commandManager.registerCommands("prison", new PrisonCommands());
     }
 
     public Platform getPlatform() {

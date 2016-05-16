@@ -53,7 +53,7 @@ public class CommandManager {
      * Registers all {@link Command} annotated methods in an object as commands
      * under a root command.
      *
-     * @param root The root command. For example, if you want to create commands under the command "/mines", the root would be "mines".
+     * @param root     The root command. For example, if you want to create commands under the command "/mines", the root would be "mines".
      * @param commands The object containing the commands to register.
      */
     public void registerCommands(String root, Object commands) {
@@ -64,8 +64,8 @@ public class CommandManager {
      * Registers all {@link Command} annotated methods in an object as commands under a
      * sub root command under a root command.
      *
-     * @param root The root command. For example, if you want to create commands under the command "/mines settings", the root would be "mines".
-     * @param subroot The sub root command. For example, if you want to create commands under the command "/mines settings", the sub root would be "settings".
+     * @param root     The root command. For example, if you want to create commands under the command "/mines settings", the root would be "mines".
+     * @param subroot  The sub root command. For example, if you want to create commands under the command "/mines settings", the sub root would be "settings".
      * @param commands The object containing the commands to register.
      */
     public void registerCommands(String root, String subroot, Object commands) {
@@ -74,6 +74,7 @@ public class CommandManager {
 
     /**
      * Registers all {@link Command} annotated methods in an object as commands at the top level.
+     *
      * @param commands The object containing the commands to register.
      */
     public void registerCommands(Object commands) {

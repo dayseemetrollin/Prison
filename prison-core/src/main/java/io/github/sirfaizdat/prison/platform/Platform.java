@@ -79,6 +79,18 @@ public interface Platform {
     Player getPlayer(UUID uid);
 
     /**
+     * Returns the version of the plugin.
+     * @return The string
+     */
+    String getVersion();
+
+    /**
+     * Register all commands with the server implementation.
+     * This should be called after the Prison object is initialized, in the platform.
+     */
+    void registerCommands();
+
+    /**
      * Run a command.
      * @param sender The {@link CommandSender}. If it's a player, provide a {@link Player} object.
      * @param label The command that the user typed in.

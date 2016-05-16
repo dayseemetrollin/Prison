@@ -132,6 +132,16 @@ public class CommandTest {
             return null;
         }
 
+        @Override
+        public String getVersion() {
+            return null;
+        }
+
+        @Override
+        public void registerCommands() {
+
+        }
+
     }
 
     private class TestCommandSender implements CommandSender {

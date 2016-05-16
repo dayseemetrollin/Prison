@@ -24,6 +24,7 @@ import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
 
 /**
  * Determines whether a user is allowed to perform a command.
+ *
  * @author SirFaizdat
  * @since 3.0
  */

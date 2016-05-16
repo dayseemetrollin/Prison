@@ -16,27 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.spigot;
+package io.github.sirfaizdat.prison;
 
 import com.sk89q.intake.Command;
-import com.sk89q.intake.Require;
 import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
 
 /**
+ * Commands for Prison.
+ *
  * @author SirFaizdat
+ * @since 3.0
  */
-public class MinesCommands {
+public class PrisonCommands {
 
-    @Command(aliases = "create", desc = "Create a new mine")
-    @Require("prison.mine.create")
-    public void createCommand(CommandSender sender, String name) {
-        sender.sendMessage("Nope! You can't do that yet. " + name + " will have to wait, Mr. " + sender.getName());
+    @Command(aliases = "version", desc = "Shows version information for Prison.")
+    public void versionCommand(CommandSender sender) {
+        sender.sendMessage("You are running Prison v" + Prison.instance.getPlatform().getVersion() + ".");
+        if (Prison.instance.getPlatform().getVersion().contains("SNAPSHOT"))
+            sender.sendMessage("Note: You are running a development build, which are by no means stable. Please report any issues to the issue tracker.");
     }
 
-    @Command(aliases = "delete", desc = "Delete a mine")
-    @Require("prison.mine.delete")
-    public void deleteCommand(CommandSender sender, String name) {
-        sender.sendMessage("Nope! You can't do that yet. " + name + " is spared, Mr. " + sender.getName());
+    @Command(aliases = "update", desc = "Update the plugin to the latest version.")
+    public void updateCommand(CommandSender sender) {
+        sender.sendMessage("Update functionality is coming soon.");
     }
 
 }
