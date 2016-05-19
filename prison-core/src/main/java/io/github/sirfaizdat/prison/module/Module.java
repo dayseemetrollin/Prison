@@ -39,9 +39,9 @@ public abstract class Module {
 
     // Actual inherited methods
 
-    abstract void init();
+    protected abstract void init();
 
-    abstract void deinit();
+    protected abstract void deinit();
 
     // Conveniently provided getters
 
@@ -49,11 +49,11 @@ public abstract class Module {
         return name;
     }
 
-    String getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    void setStatus(String status) {
+    protected void setStatus(String status) {
         this.status = status;
     }
 

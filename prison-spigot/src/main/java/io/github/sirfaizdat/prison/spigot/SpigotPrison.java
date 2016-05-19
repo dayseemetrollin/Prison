@@ -56,6 +56,11 @@ public class SpigotPrison extends JavaPlugin implements Platform {
     }
 
     @Override
+    public void onDisable() {
+        prison.getModuleManager().unregisterAll(); // Disable all modules, we're done!
+    }
+
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof org.bukkit.entity.Player)
             dispatchCommand(new SpigotPlayer((org.bukkit.entity.Player) sender), label, args);
@@ -92,6 +97,8 @@ public class SpigotPrison extends JavaPlugin implements Platform {
     public String getVersion() {
         return getDescription().getVersion();
     }
+
+    // == Command stuff ==
 
     @Override
     public void registerCommands() {

@@ -76,6 +76,13 @@ public class ModuleManager {
     }
 
     /**
+     * Unregister all modules. This should most likely be called when the plugin is disabling.
+     */
+    public void unregisterAll() {
+        for(Module module : modules) unregisterModule(module);
+    }
+
+    /**
      * Returns the {@link Module} instance by the name specified.
      *
      * @param name The name of the module (set in {@link Module#getName()}.
@@ -87,4 +94,7 @@ public class ModuleManager {
         return null;
     }
 
+    public List<Module> getModules() {
+        return modules;
+    }
 }
