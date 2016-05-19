@@ -21,13 +21,11 @@ package io.github.sirfaizdat.prison.platform;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.Validate;
-
 import com.google.common.collect.Maps;
 
 /**
  * All supported color values for chat.
- * This is a Bukkit class, unedited and unadapted (since no specific Bukkit-related features are used).
+ * This is based off a Bukkit class. It's been stripped down and modified for use with Prison.
  *
  * @author Erik Broes
  * @author Dinnerbone
@@ -42,6 +40,7 @@ import com.google.common.collect.Maps;
  * @since 3.0
  */
 public enum ChatColor {
+
     /**
      * Represents black
      */
@@ -109,30 +108,30 @@ public enum ChatColor {
     /**
      * Represents magical characters that change around randomly
      */
-    MAGIC('k', 0x10, true),
+    MAGIC('k', 0x10),
     /**
      * Makes the text bold.
      */
-    BOLD('l', 0x11, true),
+    BOLD('l', 0x11),
     /**
      * Makes a line appear through the text.
      */
-    STRIKETHROUGH('m', 0x12, true),
+    STRIKETHROUGH('m', 0x12),
     /**
      * Makes the text appear underlined.
      */
-    UNDERLINE('n', 0x13, true),
+    UNDERLINE('n', 0x13),
     /**
      * Makes the text italic.
      */
-    ITALIC('o', 0x14, true),
+    ITALIC('o', 0x14),
     /**
      * Resets all previous chat colors or formats.
      */
     RESET('r', 0x15);
 
     /**
-     * The special character which prefixes all chat colour codes. Use this if
+     * The special character which prefixes all chat color codes. Use this if
      * you need to dynamically convert colour codes from your custom format.
      */
     public static final char COLOR_CHAR = '\u00A7';
@@ -140,77 +139,19 @@ public enum ChatColor {
 
     private final int intCode;
     private final char code;
-    private final boolean isFormat;
     private final String toString;
     private final static Map<Integer, ChatColor> BY_ID = Maps.newHashMap();
     private final static Map<Character, ChatColor> BY_CHAR = Maps.newHashMap();
 
     ChatColor(char code, int intCode) {
-        this(code, intCode, false);
-    }
-
-    ChatColor(char code, int intCode, boolean isFormat) {
         this.code = code;
         this.intCode = intCode;
-        this.isFormat = isFormat;
         this.toString = new String(new char[]{COLOR_CHAR, code});
-    }
-
-    /**
-     * Gets the char value associated with this color
-     *
-     * @return A char value of this color code
-     */
-    public char getChar() {
-        return code;
     }
 
     @Override
     public String toString() {
         return toString;
-    }
-
-    /**
-     * Checks if this code is a format code as opposed to a color code.
-     *
-     * @return whether this ChatColor is a format code
-     */
-    public boolean isFormat() {
-        return isFormat;
-    }
-
-    /**
-     * Checks if this code is a color code as opposed to a format code.
-     *
-     * @return whether this ChatColor is a color code
-     */
-    public boolean isColor() {
-        return !isFormat && this != RESET;
-    }
-
-    /**
-     * Gets the color represented by the specified color code
-     *
-     * @param code Code to check
-     * @return Associative {@link ChatColor} with the given code,
-     * or null if it doesn't exist
-     */
-    public static ChatColor getByChar(char code) {
-        return BY_CHAR.get(code);
-    }
-
-    /**
-     * Gets the color represented by the specified color code
-     *
-     * @param code Code to check
-     * @return Associative {@link ChatColor} with the given code,
-     * or null if it doesn't exist
-     */
-    public static ChatColor getByChar(String code) {
-        Validate.notNull(code, "Code cannot be null");
-        Validate.isTrue(code.length() > 0, "Code must have at least one char");
-
-        return BY_CHAR.get(code.charAt(0));
     }
 
     /**
@@ -246,37 +187,6 @@ public enum ChatColor {
             }
         }
         return new String(b);
-    }
-
-    /**
-     * Gets the ChatColors used at the end of the given input string.
-     *
-     * @param input Input string to retrieve the colors from.
-     * @return Any remaining ChatColors to pass onto the next line.
-     */
-    public static String getLastColors(String input) {
-        String result = "";
-        int length = input.length();
-
-        // Search backwards from the end as it is faster
-        for (int index = length - 1; index > -1; index--) {
-            char section = input.charAt(index);
-            if (section == COLOR_CHAR && index < length - 1) {
-                char c = input.charAt(index + 1);
-                ChatColor color = getByChar(c);
-
-                if (color != null) {
-                    result = color.toString() + result;
-
-                    // Once we find a color or reset we can stop searching
-                    if (color.isColor() || color.equals(RESET)) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        return result;
     }
 
     static {
