@@ -121,12 +121,13 @@ public class SpigotPrison extends JavaPlugin implements Platform {
 
     /**
      * Convert a {@link CommandMapping} to a {@link BukkitCommand}, to submit it to Spigot.
+     *
      * @param mapping The {@link CommandMapping}
      * @return The {@link BukkitCommand}
      */
     private BukkitCommand toBukkitCommand(CommandMapping mapping) {
         Description description = mapping.getDescription();
-        String desc = description.getShortDescription() == null ? "No description provided." : description.getShortDescription();
+        String desc = description.getShortDescription() == null ? ("Type /" + mapping.getPrimaryAlias() + " help for details.") : description.getShortDescription();
         String usage = description.getUsage() == null ? "No usage provided." : description.getUsage();
         return new BukkitCommand(mapping.getPrimaryAlias(), desc, usage, Arrays.asList(mapping.getAllAliases())) {
             @Override

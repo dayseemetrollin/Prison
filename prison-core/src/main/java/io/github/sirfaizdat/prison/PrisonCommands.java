@@ -19,6 +19,7 @@
 package io.github.sirfaizdat.prison;
 
 import com.sk89q.intake.Command;
+import io.github.sirfaizdat.prison.platform.ChatColor;
 import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
 
 /**
@@ -28,6 +29,26 @@ import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
  * @since 3.0
  */
 public class PrisonCommands {
+
+    private String[] helpMessage = {
+            "&8---- &3/prison help &8----",
+            "&7The prison command allows you to manage core plugin features.",
+            "&3/prison help &8- &7Displays this message.",
+            "&3/prison version &8- &7Shows version information for Prison.",
+            "&3/prison update &8- &7Updates the plugin to the latest version.",
+            "&8---- &3/prison help &8----"
+    };
+
+    // Description isn't needed for this one, it's ignored anyway.
+    @Command(aliases = "", desc = "")
+    public void rootCommand(CommandSender sender) {
+        helpCommand(sender);
+    }
+
+    @Command(aliases = "help", desc = "Display the help screen.")
+    public void helpCommand(CommandSender sender) {
+        for(String s : helpMessage) sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+    }
 
     @Command(aliases = "version", desc = "Shows version information for Prison.")
     public void versionCommand(CommandSender sender) {
