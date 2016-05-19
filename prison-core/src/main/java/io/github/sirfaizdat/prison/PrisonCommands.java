@@ -19,8 +19,12 @@
 package io.github.sirfaizdat.prison;
 
 import com.sk89q.intake.Command;
+import com.sk89q.intake.parametric.annotation.Switch;
 import io.github.sirfaizdat.prison.platform.ChatColor;
 import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Commands for Prison.
@@ -36,6 +40,7 @@ public class PrisonCommands {
             "&3/prison help &8- &7Displays this message.",
             "&3/prison version &8- &7Shows version information for Prison.",
             "&3/prison update &8- &7Updates the plugin to the latest version.",
+            "&3/prison metrics &7[-d to disable] &8 - &7Displays the status of, or disables, Metrics.",
             "&8---- &3/prison help &8----"
     };
 
@@ -52,14 +57,20 @@ public class PrisonCommands {
 
     @Command(aliases = "version", desc = "Shows version information for Prison.")
     public void versionCommand(CommandSender sender) {
-        sender.sendMessage("You are running Prison v" + Prison.instance.getPlatform().getVersion() + ".");
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7You are running &3Prison v" + Prison.instance.getPlatform().getVersion() + "&7."));
         if (Prison.instance.getPlatform().getVersion().contains("SNAPSHOT"))
-            sender.sendMessage("Note: You are running a development build, which are by no means stable. Please report any issues to the issue tracker.");
+            sender.sendMessage(ChatColor.DARK_GRAY + "Note: You are running a development build, which are by no means stable. Please report any issues to the issue tracker.");
     }
 
     @Command(aliases = "update", desc = "Update the plugin to the latest version.")
     public void updateCommand(CommandSender sender) {
         sender.sendMessage("Update functionality is coming soon.");
+    }
+
+    @Command(aliases = "metrics", desc = "Check the status of Metrics.")
+    public void metricsCommand(CommandSender sender, @Switch('d') boolean disable) {
+        if(disable) sender.sendMessage("I'll disable it once you add it!");
+        else sender.sendMessage("Obviously, Metrics isn't running because you haven't added it yet. SirFaizdat, you're such an idiot.");
     }
 
 }
