@@ -26,12 +26,11 @@ import io.github.sirfaizdat.prison.command.modules.prison.Sender;
 import io.github.sirfaizdat.prison.platform.Configuration;
 import io.github.sirfaizdat.prison.platform.Location;
 import io.github.sirfaizdat.prison.platform.Platform;
-import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
-import io.github.sirfaizdat.prison.platform.interfaces.Player;
-import io.github.sirfaizdat.prison.platform.interfaces.World;
+import io.github.sirfaizdat.prison.platform.interfaces.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -138,7 +137,32 @@ public class CommandTest {
         }
 
         @Override
+        public File getDataFolder() {
+            return null; // Might need to make an actual folder
+        }
+
+        @Override
+        public EconomyIntegration getEconomyIntegration() {
+            return null;
+        }
+
+        @Override
+        public PermissionIntegration getPermissionIntegration() {
+            return null;
+        }
+
+        @Override
+        public SelectionIntegration getSelectionIntegration() {
+            return null;
+        }
+
+        @Override
         public void registerCommands() {
+
+        }
+
+        @Override
+        public void print(String message) {
 
         }
 
