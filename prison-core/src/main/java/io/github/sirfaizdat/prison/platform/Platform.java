@@ -24,10 +24,9 @@ import com.sk89q.intake.InvocationCommandException;
 import com.sk89q.intake.argument.Namespace;
 import com.sk89q.intake.util.auth.AuthorizationException;
 import io.github.sirfaizdat.prison.Prison;
-import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
-import io.github.sirfaizdat.prison.platform.interfaces.Player;
-import io.github.sirfaizdat.prison.platform.interfaces.World;
+import io.github.sirfaizdat.prison.platform.interfaces.*;
 
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +42,8 @@ import java.util.UUID;
  * @since 3.0
  */
 public interface Platform {
+
+    // TODO Fix configuration
 
     /**
      * Returns this platform's implementation of {@link Configuration}, where user-defined settings can be retrieved.
@@ -84,11 +85,26 @@ public interface Platform {
      */
     String getVersion();
 
+    File getDataFolder();
+
+    EconomyIntegration getEconomyIntegration();
+
+    PermissionIntegration getPermissionIntegration();
+
+    SelectionIntegration getSelectionIntegration();
+
     /**
      * Register all commands with the server implementation.
      * This should be called after the Prison object is initialized, in the platform.
      */
     void registerCommands();
+
+    /**
+     * Print out a colored message to the server console.
+     *
+     * @param message The message to print. Supports standard &-prefixed color codes.
+     */
+    void print(String message);
 
     /**
      * Run a command.
@@ -104,7 +120,8 @@ public interface Platform {
         try {
             Prison.instance.getCommandManager().getDispatcher().call(label + " " + String.join(" ", args), namespace, ImmutableList.of());
         } catch (CommandException | InvocationCommandException | AuthorizationException e) {
-            sender.sendMessage(e.getMessage());
+            sender.sendMessage(e.getLocalizedMessage());
+            e.printStackTrace();
         }
     }
 

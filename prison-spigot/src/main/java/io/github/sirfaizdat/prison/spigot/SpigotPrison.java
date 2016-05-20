@@ -23,14 +23,16 @@ import com.sk89q.intake.Description;
 import com.sk89q.intake.dispatcher.Dispatcher;
 import io.github.sirfaizdat.prison.Prison;
 import io.github.sirfaizdat.prison.command.CommandManager;
+import io.github.sirfaizdat.prison.platform.ChatColor;
 import io.github.sirfaizdat.prison.platform.Configuration;
 import io.github.sirfaizdat.prison.platform.Platform;
-import io.github.sirfaizdat.prison.platform.interfaces.Player;
-import io.github.sirfaizdat.prison.platform.interfaces.World;
+import io.github.sirfaizdat.prison.platform.TextUtil;
+import io.github.sirfaizdat.prison.platform.interfaces.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -98,6 +100,34 @@ public class SpigotPrison extends JavaPlugin implements Platform {
         return getDescription().getVersion();
     }
 
+    @Override
+    public EconomyIntegration getEconomyIntegration() {
+        return null;
+    }
+
+    @Override
+    public PermissionIntegration getPermissionIntegration() {
+        return null;
+    }
+
+    @Override
+    public SelectionIntegration getSelectionIntegration() {
+        WorldEditIntegration integration = new WorldEditIntegration();
+        if(!integration.load()) return null;
+        return integration;
+    }
+
+    @Override
+    public void print(String message) {
+        ConsoleCommandSender sender = Bukkit.getConsoleSender();
+        message = TextUtil.parse("&3Prison &8> &7%s", message);
+        if(sender == null) {
+            Bukkit.getLogger().info(ChatColor.stripColor(message));
+            return;
+        }
+        sender.sendMessage(message);
+    }
+
     // == Command stuff ==
 
     @Override
@@ -123,9 +153,7 @@ public class SpigotPrison extends JavaPlugin implements Platform {
         Set<CommandMapping> mappings = dispatcher.getCommands();
         for (CommandMapping mapping : mappings)
             commandMap.register(mapping.getPrimaryAlias(), toBukkitCommand(mapping));
-
     }
-
     /**
      * Convert a {@link CommandMapping} to a {@link BukkitCommand}, to submit it to Spigot.
      *

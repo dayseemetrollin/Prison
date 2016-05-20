@@ -16,25 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.command.modules.prison;
+package io.github.sirfaizdat.prison.mines.resets;
 
-import com.sk89q.intake.parametric.Module;
-import com.sk89q.intake.parametric.binder.Binder;
-import io.github.sirfaizdat.prison.mines.Mine;
-import io.github.sirfaizdat.prison.platform.interfaces.CommandSender;
-import io.github.sirfaizdat.prison.platform.interfaces.Player;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author SirFaizdat
  */
-public class PrisonModule implements Module {
+public class ResetMethods {
 
-    @Override
-    public void configure(Binder binder) {
-        binder.bind(CommandSender.class).toProvider(new CommandSenderProvider());
-        binder.bind(Player.class).toProvider(new PlayerProvider());
-        binder.bind(Player.class).annotatedWith(Sender.class).toProvider(new PlayerSenderProvider());
-        binder.bind(Mine.class).toProvider(new MineProvider());
+    private List<ResetMethod> resetMethods = new ArrayList<>();
+    private static ResetMethods instance;
+
+    public static ResetMethods getInstance() {
+        if(instance == null) instance = new ResetMethods();
+        return instance;
+    }
+
+    public void addResetMethod(ResetMethod method) {
+        resetMethods.add(method);
+    }
+
+    public ResetMethod getResetMethodByName(String name) {
+        for(ResetMethod resetMethod : resetMethods) if (resetMethod.name().equalsIgnoreCase(name)) return resetMethod;
+        return null;
+    }
+
+    public List<ResetMethod> getResetMethods() {
+        return resetMethods;
     }
 
 }

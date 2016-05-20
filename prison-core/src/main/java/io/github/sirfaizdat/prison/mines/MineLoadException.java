@@ -16,11 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+package io.github.sirfaizdat.prison.mines;
 
-dependencies {
-    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+/**
+ * Thrown when a mine fails to be loaded.
+ *
+ * @author SirFaizdat
+ */
+public class MineLoadException extends Exception {
+
+    public MineLoadException(String message) {
+        super(message);
+    }
+
 }
-
-build.dependsOn(shadowJar)

@@ -30,8 +30,8 @@ public abstract class Module {
     // Conveniently provided variables
 
     protected String name;
-    protected String status;
-    protected boolean enabled = false;
+    private String status;
+    private boolean enabled = false;
 
     public Module(String name) {
         this.name = name;
@@ -39,9 +39,9 @@ public abstract class Module {
 
     // Actual inherited methods
 
-    protected abstract void init();
+    public abstract void init();
 
-    protected abstract void deinit();
+    public abstract void deinit();
 
     // Conveniently provided getters
 
@@ -53,7 +53,7 @@ public abstract class Module {
         return status;
     }
 
-    protected void setStatus(String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

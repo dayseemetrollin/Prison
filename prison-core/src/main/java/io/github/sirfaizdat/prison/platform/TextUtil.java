@@ -16,11 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+package io.github.sirfaizdat.prison.platform;
 
-dependencies {
-    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+/**
+ * @author SirFaizdat
+ */
+public class TextUtil {
+
+    public static String parse(String msg, String... format) {
+        return ChatColor.translateAlternateColorCodes('&', String.format(msg, format));
+    }
+
+    public static String[] packAndSplit(String original, String splitAt) {
+        return original.replaceAll(" ", "").split(splitAt);
+    }
+
 }
-
-build.dependsOn(shadowJar)

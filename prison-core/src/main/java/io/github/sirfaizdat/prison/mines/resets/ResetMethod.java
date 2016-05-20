@@ -16,11 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+package io.github.sirfaizdat.prison.mines.resets;
 
-dependencies {
-    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+import io.github.sirfaizdat.prison.mines.Mine;
+
+/**
+ * Handles the resetting of a mine.
+ *
+ * @author SirFaizdat
+ */
+public interface ResetMethod {
+
+    boolean run(Mine mine);
+
+    String name();
+
 }
-
-build.dependsOn(shadowJar)
