@@ -18,47 +18,10 @@
 
 package io.github.sirfaizdat.prison;
 
-import io.github.sirfaizdat.prison.command.CommandManager;
-import io.github.sirfaizdat.prison.mines.MinesModule;
-import io.github.sirfaizdat.prison.module.ModuleManager;
-import io.github.sirfaizdat.prison.platform.Platform;
-
 /**
- * Stores instances for the rest of prison-core to use.
- * Each implementation should instantiate this upon their enable, providing their {@link Platform} implementation.
- *
  * @author SirFaizdat
  * @since 3.0
  */
 public class Prison {
-
-    public static Prison instance;
-    private Platform platform;
-    private CommandManager commandManager;
-    private ModuleManager moduleManager;
-
-    public Prison(Platform platform) {
-        instance = this;
-        this.platform = platform;
-        this.commandManager = new CommandManager();
-        this.moduleManager = new ModuleManager();
-
-        this.platform.getConfiguration().saveDefaults();
-        this.platform.getConfiguration().load();
-        this.commandManager.registerCommands("prison", new PrisonCommands());
-        this.moduleManager.registerModule(new MinesModule());
-    }
-
-    public Platform getPlatform() {
-        return platform;
-    }
-
-    public CommandManager getCommandManager() {
-        return commandManager;
-    }
-
-    public ModuleManager getModuleManager() {
-        return moduleManager;
-    }
 
 }
