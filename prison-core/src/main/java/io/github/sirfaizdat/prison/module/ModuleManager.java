@@ -79,7 +79,8 @@ public class ModuleManager {
      * Unregister all modules. This should most likely be called when the plugin is disabling.
      */
     public void unregisterAll() {
-        for(Module module : modules) unregisterModule(module);
+        for(Module module : modules) disableModule(module);
+        modules.clear();
     }
 
     /**
