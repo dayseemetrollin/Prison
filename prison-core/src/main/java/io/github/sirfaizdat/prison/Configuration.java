@@ -16,11 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+package io.github.sirfaizdat.prison;
 
-dependencies {
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.6.2'
+/**
+ * Represents Prison's configuration.
+ * Contains all of the keys and their default values.
+ *
+ * @author SirFaizdat
+ * @since 3.0
+ */
+public class Configuration {
+
+    private String test = "Hello, world!";
+
 }
-
-build.dependsOn(shadowJar)

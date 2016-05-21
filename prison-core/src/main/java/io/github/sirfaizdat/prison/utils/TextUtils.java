@@ -16,11 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+package io.github.sirfaizdat.prison.utils;
 
-dependencies {
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.6.2'
+/**
+ * @author SirFaizdat
+ */
+public class TextUtils {
+
+    private TextUtils() {}
+
+    public static String parse(String message, Object... format) {
+        return ChatColor.translateAlternateColorCodes('&', String.format(message, format));
+    }
+
 }
-
-build.dependsOn(shadowJar)

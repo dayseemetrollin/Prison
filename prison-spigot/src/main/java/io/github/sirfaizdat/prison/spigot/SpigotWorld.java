@@ -16,11 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+package io.github.sirfaizdat.prison.spigot;
 
-dependencies {
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.6.2'
+import io.github.sirfaizdat.prison.internal.world.Block;
+import io.github.sirfaizdat.prison.internal.world.Location;
+import io.github.sirfaizdat.prison.internal.world.World;
+
+/**
+ * @author SirFaizdat
+ */
+public class SpigotWorld implements World {
+
+    private org.bukkit.World bWorld;
+
+    public SpigotWorld(org.bukkit.World bWorld) {
+        this.bWorld = bWorld;
+    }
+
+    @Override
+    public String getName() {
+        return bWorld.getName();
+    }
+
+    @Override
+    public Block getBlockAt(Location loc) {
+        return null;
+    }
+
+    @Override
+    public void setBlockAt(Location loc, Block block) {
+
+    }
+
 }
-
-build.dependsOn(shadowJar)

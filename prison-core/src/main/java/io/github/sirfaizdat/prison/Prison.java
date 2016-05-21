@@ -18,10 +18,58 @@
 
 package io.github.sirfaizdat.prison;
 
+import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import io.github.sirfaizdat.prison.internal.Platform;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+
 /**
+ * The entry point for an implementation of Prison.
+ *
  * @author SirFaizdat
  * @since 3.0
  */
 public class Prison {
 
+    private Platform platform;
+    private Configuration configuration;
+
+    public Prison(Platform platform) {
+        this.platform = platform;
+        this.loadConfig();
+    }
+
+    private void loadConfig() {
+        Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+        File configFile = new File(getPlatform().getPluginFolder(), "config.json");
+
+        try {
+
+            if (!configFile.exists()) {
+                configuration = new Configuration();
+                String json = gson.toJson(configuration);
+                Files.write(json, configFile, Charset.defaultCharset());
+                return;
+            }
+
+            configuration = gson.fromJson(String.join("\n", Files.readLines(configFile, Charset.defaultCharset())), Configuration.class);
+
+        } catch (IOException e) {
+            getPlatform().log("&cFailed to read/write the config.json file. &8Reason: %s", e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    public Platform getPlatform() {
+        return platform;
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
+    }
 }

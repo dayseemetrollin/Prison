@@ -1,0 +1,95 @@
+/*
+ * Prison is a Minecraft plugin for the prison gamemode.
+ * Copyright (C) 2016 SirFaizdat
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package io.github.sirfaizdat.prison.internal;
+
+import io.github.sirfaizdat.prison.internal.entity.Player;
+import io.github.sirfaizdat.prison.internal.world.World;
+
+import java.io.File;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+/**
+ * Represents a platform that Prison has been implemented.
+ *
+ * @author SirFaizdat
+ * @since 3.0
+ */
+public interface Platform {
+
+    /**
+     * Schedules a task to be run once every interval.
+     *
+     * @param delay  Amount of time to wait before starting, in ticks.
+     * @param period Amount of time to wait before repeating, in ticks.
+     * @param task   The {@link Runnable} which runs the task.
+     * @return The ID of the task, or -1 if the scheduling failed.
+     */
+    int schedule(long delay, long period, Runnable task);
+
+    /**
+     * Reloads all Prison data, such as configuration.
+     */
+    void reload();
+
+    /**
+     * Log a message to the server's console.
+     *
+     * @param message The message to log. This may include colors.
+     * @param format  The values to insert into {@link String#format(String, Object...)}, which will be called on the message before it is colored.
+     */
+    void log(String message, Object... format);
+
+    /**
+     * Returns a world instance for the specified name.
+     *
+     * @param name The name of the world.
+     * @return The {@link World} instance, or null if a world by that name couldn't be found.
+     */
+    Optional<World> getWorld(String name);
+
+    /**
+     * Returns an online player.
+     *
+     * @param name The name of the player.
+     * @return The {@link Optional} containing the player. The optional will be empty if the player is not online.
+     */
+    Optional<Player> getPlayer(String name);
+
+    /**
+     * Returns an online player.
+     *
+     * @param uuid The {@link UUID} of the player.
+     * @return The {@link Optional} containing the player. The optional will be empty if the player is not online.
+     */
+    Optional<Player> getPlayer(UUID uuid);
+
+    /**
+     * Returns all the online players.
+     */
+    List<Player> getOnlinePlayers();
+
+    /**
+     * Returns the folder where the plugin should store data.
+     * Implementations must initializer the data folder before it's provided.
+     */
+    File getPluginFolder();
+
+}
