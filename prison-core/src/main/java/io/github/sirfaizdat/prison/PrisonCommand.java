@@ -41,10 +41,9 @@ public class PrisonCommand {
         if (Prison.instance.isDevBuild())
             sender.sendMessage("&7You are running a &3development build&7, which may be unstable.");
         // Show alerts information
-        // TODO this is sending twice
         if (Prison.instance.getAlerts().getAlerts().size() > 0)
             new FancyMessage("There are ").color(ChatColor.GRAY)
-                    .then(Prison.instance.getAlerts().getAlerts().size() + " alerts").color(ChatColor.AQUA).command("/prison alerts")
+                    .then(Prison.instance.getAlerts().getAlerts().size() + " alerts").color(ChatColor.AQUA).command("/prison alerts").tooltip("Click to run /prison alerts")
                     .then(".").color(ChatColor.GRAY)
                     .send(sender);
         sender.sendMessage("&8---- &3/prison version &8----");

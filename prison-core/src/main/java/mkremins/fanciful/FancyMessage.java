@@ -333,13 +333,13 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
         return this;
     }
     /*
-	
+
 	/**
 	 * If the text is a translatable key, and it has replaceable values, this function can be used to set the replacements that will be used in the message.
 	 * @param replacements The replacements, in order, that will be used in the language-specific message.
 	 * @return This builder instance.
 	 */   /* ------------
-	public FancyMessage translationReplacements(final Iterable<? extends CharSequence> replacements){
+    public FancyMessage translationReplacements(final Iterable<? extends CharSequence> replacements){
 		for(CharSequence str : replacements){
 			latest().translationReplacements.add(new JsonString(str));
 		}
@@ -463,10 +463,8 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
     }
 
     private void send(CommandSender sender, String jsonString) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(toOldMessageFormat());
-        }
-        sender.sendRaw(jsonString);
+        if (sender.getType() != CommandSender.Type.PLAYER) sender.sendMessage(toOldMessageFormat());
+        else sender.sendRaw(jsonString);
     }
 
     /**
