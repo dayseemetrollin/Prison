@@ -69,10 +69,9 @@ public class SpigotListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        if(!listeners.containsKey(EventType.PLAYER_JOIN)) return;
+        if(!listeners.containsKey(EventType.PLAYER_QUIT)) return;
         EventData data = new EventData();
         data.put("player", e.getPlayer());
-        // NPE here...
         listeners.get(EventType.PLAYER_QUIT).forEach(eventListener -> eventListener.handle(data));
     }
 
