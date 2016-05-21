@@ -35,10 +35,12 @@ import java.nio.charset.Charset;
  */
 public class Prison {
 
+    public static Prison instance;
     private Platform platform;
     private Configuration configuration;
 
     public Prison(Platform platform) {
+        instance = this;
         this.platform = platform;
         this.loadConfig();
     }
@@ -72,4 +74,5 @@ public class Prison {
     public Configuration getConfiguration() {
         return configuration;
     }
+
 }

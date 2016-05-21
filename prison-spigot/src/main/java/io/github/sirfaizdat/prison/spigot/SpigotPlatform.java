@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author SirFaizdat
@@ -56,32 +58,31 @@ public class SpigotPlatform implements Platform {
     public void log(String message, Object... format) {
         ConsoleCommandSender sender = Bukkit.getConsoleSender();
         message = TextUtils.parse("&3Prison &8> " + message, format);
-        if(sender == null) Bukkit.getLogger().info(ChatColor.stripColor(message));
+        if (sender == null) Bukkit.getLogger().info(ChatColor.stripColor(message));
         else sender.sendMessage(message);
     }
 
     @Override
     public Optional<World> getWorld(String name) {
-        if(Bukkit.getWorld(name) == null) return Optional.empty();
+        if (Bukkit.getWorld(name) == null) return Optional.empty();
         return Optional.of(new SpigotWorld(Bukkit.getWorld(name)));
     }
 
     @Override
     public Optional<Player> getPlayer(String name) {
-        if(Bukkit.getPlayer(name) == null || !Bukkit.getPlayer(name).isOnline()) return Optional.empty();
+        if (Bukkit.getPlayer(name) == null || !Bukkit.getPlayer(name).isOnline()) return Optional.empty();
         return Optional.of(new SpigotPlayer(Bukkit.getPlayer(name)));
     }
 
     @Override
     public Optional<Player> getPlayer(UUID uuid) {
-        if(Bukkit.getPlayer(uuid) == null || !Bukkit.getPlayer(uuid).isOnline()) return Optional.empty();
+        if (Bukkit.getPlayer(uuid) == null || !Bukkit.getPlayer(uuid).isOnline()) return Optional.empty();
         return Optional.of(new SpigotPlayer(Bukkit.getPlayer(uuid)));
     }
 
     @Override
     public List<Player> getOnlinePlayers() {
-        List<Player> ret = new ArrayList<>();
-        for(org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) ret.add(new SpigotPlayer(player));
+        List<Player> ret = Bukkit.getOnlinePlayers().stream().map((Function<org.bukkit.entity.Player, SpigotPlayer>) SpigotPlayer::new).collect(Collectors.toList());
         return ret;
     }
 
