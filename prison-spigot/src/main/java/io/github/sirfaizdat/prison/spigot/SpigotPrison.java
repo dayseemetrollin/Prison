@@ -39,6 +39,8 @@ public class SpigotPrison extends JavaPlugin {
     public void onDisable() {
     }
 
+    // Wrapper-ing methods
+
     public static Location wrapLocation(org.bukkit.Location location) {
         return new Location(new SpigotWorld(location.getWorld()), location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
     }

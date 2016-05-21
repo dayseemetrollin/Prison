@@ -20,11 +20,13 @@ package io.github.sirfaizdat.prison.spigot;
 
 import io.github.sirfaizdat.prison.internal.world.Block;
 import io.github.sirfaizdat.prison.internal.world.Location;
+import io.github.sirfaizdat.prison.internal.world.Material;
 import io.github.sirfaizdat.prison.internal.world.World;
 
 /**
  * @author SirFaizdat
  */
+@SuppressWarnings("deprecation")
 public class SpigotWorld implements World {
 
     private org.bukkit.World bWorld;
@@ -40,12 +42,13 @@ public class SpigotWorld implements World {
 
     @Override
     public Block getBlockAt(Location loc) {
-        return null;
+        org.bukkit.block.Block b = bWorld.getBlockAt(SpigotPrison.wrapLocation(loc));
+        return new Block(Material.valueOf(b.getType().name()), b.getData());
     }
 
     @Override
     public void setBlockAt(Location loc, Block block) {
-
+        bWorld.getBlockAt(SpigotPrison.wrapLocation(loc)).setTypeIdAndData(block.getMaterial().getId(), block.getData(), true);
     }
 
 }
