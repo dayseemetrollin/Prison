@@ -19,6 +19,8 @@
 package io.github.sirfaizdat.prison.internal;
 
 import io.github.sirfaizdat.prison.internal.entity.Player;
+import io.github.sirfaizdat.prison.internal.events.EventListener;
+import io.github.sirfaizdat.prison.internal.events.EventType;
 import io.github.sirfaizdat.prison.internal.world.World;
 
 import java.io.File;
@@ -43,6 +45,14 @@ public interface Platform {
      * @return The ID of the task, or -1 if the scheduling failed.
      */
     int schedule(long delay, long period, Runnable task);
+
+    /**
+     * Registers a listener for an event type.
+     *
+     * @param type     The {@link EventType} to listen for.
+     * @param runnable The {@link EventListener} which is called when the event occurs.
+     */
+    void listen(EventType type, EventListener runnable);
 
     /**
      * Reloads all Prison data, such as configuration.

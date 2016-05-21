@@ -22,10 +22,13 @@ import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.sirfaizdat.prison.internal.Platform;
+import io.github.sirfaizdat.prison.utils.Alerts;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * The entry point for an implementation of Prison.
@@ -36,35 +39,48 @@ import java.nio.charset.Charset;
 public class Prison {
 
     public static Prison instance;
+    public static Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
     private Platform platform;
     private Configuration configuration;
+    private Alerts alerts;
 
     public Prison(Platform platform) {
         instance = this;
         this.platform = platform;
+        this.alerts = new Alerts();
         this.loadConfig();
     }
 
     private void loadConfig() {
-        Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
         File configFile = new File(getPlatform().getPluginFolder(), "config.json");
-
         try {
-
             if (!configFile.exists()) {
-                configuration = new Configuration();
-                String json = gson.toJson(configuration);
-                Files.write(json, configFile, Charset.defaultCharset());
+                writeConfig();
                 return;
             }
 
-            configuration = gson.fromJson(String.join("\n", Files.readLines(configFile, Charset.defaultCharset())), Configuration.class);
-
+            String json = String.join("\n", Files.readLines(configFile, Charset.defaultCharset()));
+            if (!json.toLowerCase().contains("  \"version\": " + Configuration.VERSION)) {
+                // The configuration is out of date
+                String fileName = "old-config-" + new SimpleDateFormat("yyyyMMddhhmm'.json'").format(new Date());
+                configFile.renameTo(new File(getPlatform().getPluginFolder(), fileName)); // Rename the file
+                writeConfig();
+                alerts.alert("&c&lAlert: &7The configuration file has been recreated. I saved your old configuration file for your reference; remember to reconfigure Prison!");
+                return;
+            }
+            configuration = gson.fromJson(json, Configuration.class);
         } catch (IOException e) {
+            alerts.alert("&c&lAlert: &7I failed to load the configuration file. Check the console for details.");
             getPlatform().log("&cFailed to read/write the config.json file. &8Reason: %s", e.getMessage());
             e.printStackTrace();
         }
 
+    }
+
+    private void writeConfig() throws IOException {
+        configuration = new Configuration();
+        String json = gson.toJson(configuration);
+        Files.write(json, new File(getPlatform().getPluginFolder(), "config.json"), Charset.defaultCharset());
     }
 
     public Platform getPlatform() {
@@ -75,4 +91,7 @@ public class Prison {
         return configuration;
     }
 
+    public Alerts getAlerts() {
+        return alerts;
+    }
 }

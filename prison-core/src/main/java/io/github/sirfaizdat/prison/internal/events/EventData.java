@@ -16,20 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison;
+package io.github.sirfaizdat.prison.internal.events;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Represents Prison's configuration.
- * Contains all of the keys and their default values.
+ * Stores data about an event.
  *
  * @author SirFaizdat
  * @since 3.0
  */
-public class Configuration {
+public class EventData {
 
-    public static final int VERSION = 1; // For everyone to reference
-    public int version = VERSION; // For the configuration file to store
+    private Map<String, Object> entries = new HashMap<>();
 
-    // Entries
+    public Object get(String key) {
+        return entries.get(key);
+    }
+
+    public boolean containsKey(String key) {
+        return entries.containsKey(key);
+    }
+
+    public void put(String key, Object val) {
+        entries.put(key, val);
+    }
+
+    public void clear() {
+        entries.clear();
+    }
 
 }

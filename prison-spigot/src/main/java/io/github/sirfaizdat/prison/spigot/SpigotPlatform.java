@@ -18,6 +18,8 @@
 
 package io.github.sirfaizdat.prison.spigot;
 
+import io.github.sirfaizdat.prison.internal.events.EventListener;
+import io.github.sirfaizdat.prison.internal.events.EventType;
 import io.github.sirfaizdat.prison.internal.Platform;
 import io.github.sirfaizdat.prison.internal.entity.Player;
 import io.github.sirfaizdat.prison.internal.world.World;
@@ -27,7 +29,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -48,6 +49,11 @@ public class SpigotPlatform implements Platform {
     @Override
     public int schedule(long delay, long period, Runnable task) {
         return spigotPrison.getServer().getScheduler().scheduleSyncRepeatingTask(spigotPrison, task, delay, period);
+    }
+
+    @Override
+    public void listen(EventType type, EventListener runnable) {
+        spigotPrison.listener.register(type, runnable);
     }
 
     @Override

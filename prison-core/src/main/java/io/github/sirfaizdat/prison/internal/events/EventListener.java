@@ -16,20 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison;
+package io.github.sirfaizdat.prison.internal.events;
 
 /**
- * Represents Prison's configuration.
- * Contains all of the keys and their default values.
+ * The handle method will be run when the event this is registered for is called.
  *
  * @author SirFaizdat
  * @since 3.0
  */
-public class Configuration {
+public interface EventListener {
 
-    public static final int VERSION = 1; // For everyone to reference
-    public int version = VERSION; // For the configuration file to store
-
-    // Entries
+    void handle(EventData data);
 
 }

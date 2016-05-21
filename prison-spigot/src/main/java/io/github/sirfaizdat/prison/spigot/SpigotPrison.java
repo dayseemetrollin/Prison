@@ -30,9 +30,15 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class SpigotPrison extends JavaPlugin {
 
+    SpigotPlatform platform;
+    SpigotListener listener;
+
     @Override
     public void onEnable() {
-        new Prison(new SpigotPlatform(this));
+        platform = new SpigotPlatform(this);
+        listener = new SpigotListener(this);
+        new Prison(platform);
+
     }
 
     @Override
