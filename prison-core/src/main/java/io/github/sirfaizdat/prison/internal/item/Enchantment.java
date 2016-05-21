@@ -176,6 +176,37 @@ public abstract class Enchantment {
     }
 
     /**
+     * Gets the Enchantment at the specified ID
+     *
+     * @param id ID to fetch
+     * @return Resulting Enchantment, or null if not found
+     * @deprecated Magic value
+     */
+    @Deprecated
+    public static Enchantment getById(int id) {
+        return byId.get(id);
+    }
+
+    /**
+     * Gets the Enchantment at the specified name
+     *
+     * @param name Name to fetch
+     * @return Resulting Enchantment, or null if not found
+     */
+    public static Enchantment getByName(String name) {
+        return byName.get(name);
+    }
+
+    /**
+     * Gets an array of all the registered {@link Enchantment}s
+     *
+     * @return Array of enchantments
+     */
+    public static Enchantment[] values() {
+        return byId.values().toArray(new Enchantment[byId.size()]);
+    }
+
+    /**
      * Gets the unique ID of this enchantment
      *
      * @return Unique ID
@@ -257,36 +288,5 @@ public abstract class Enchantment {
     @Override
     public String toString() {
         return "Enchantment[" + id + ", " + getName() + "]";
-    }
-
-    /**
-     * Gets the Enchantment at the specified ID
-     *
-     * @param id ID to fetch
-     * @return Resulting Enchantment, or null if not found
-     * @deprecated Magic value
-     */
-    @Deprecated
-    public static Enchantment getById(int id) {
-        return byId.get(id);
-    }
-
-    /**
-     * Gets the Enchantment at the specified name
-     *
-     * @param name Name to fetch
-     * @return Resulting Enchantment, or null if not found
-     */
-    public static Enchantment getByName(String name) {
-        return byName.get(name);
-    }
-
-    /**
-     * Gets an array of all the registered {@link Enchantment}s
-     *
-     * @return Array of enchantments
-     */
-    public static Enchantment[] values() {
-        return byId.values().toArray(new Enchantment[byId.size()]);
     }
 }

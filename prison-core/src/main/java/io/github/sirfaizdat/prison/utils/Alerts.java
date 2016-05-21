@@ -20,7 +20,6 @@ package io.github.sirfaizdat.prison.utils;
 
 import io.github.sirfaizdat.prison.Prison;
 import io.github.sirfaizdat.prison.internal.entity.Player;
-import io.github.sirfaizdat.prison.internal.events.EventData;
 import io.github.sirfaizdat.prison.internal.events.EventListener;
 import io.github.sirfaizdat.prison.internal.events.EventType;
 
@@ -50,10 +49,13 @@ public class Alerts {
     private EventListener onPlayerJoin() {
         return data -> {
             Optional<Player> playerOptional = (Optional<Player>) data.get("player");
-            if(!playerOptional.isPresent()) return;
+            if (!playerOptional.isPresent()) return;
             Player player = playerOptional.get();
-            if(player.isOp()) alerts.forEach(player::sendMessage);
+            if (player.isOp()) alerts.forEach(player::sendMessage);
         };
     }
 
+    public List<String> getAlerts() {
+        return alerts;
+    }
 }

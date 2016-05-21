@@ -18,6 +18,7 @@
 
 package io.github.sirfaizdat.prison.internal;
 
+import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
 import io.github.sirfaizdat.prison.internal.entity.Player;
 import io.github.sirfaizdat.prison.internal.events.EventListener;
 import io.github.sirfaizdat.prison.internal.events.EventType;
@@ -53,6 +54,18 @@ public interface Platform {
      * @param runnable The {@link EventListener} which is called when the event occurs.
      */
     void listen(EventType type, EventListener runnable);
+
+    /**
+     * Registers a command with the server implementation.
+     *
+     * @param command The {@link PluginCommand} to register.
+     */
+    void registerCommand(PluginCommand command);
+
+    /**
+     * Returns a list of all registered commands.
+     */
+    List<PluginCommand> getCommands();
 
     /**
      * Reloads all Prison data, such as configuration.
@@ -101,5 +114,10 @@ public interface Platform {
      * Implementations must initializer the data folder before it's provided.
      */
     File getPluginFolder();
+
+    /**
+     * Returns the version of Prison.
+     */
+    String getPluginVersion();
 
 }

@@ -28,6 +28,7 @@ public interface World {
 
     /**
      * Returns the name of this world.
+     *
      * @return A {@link String}.
      */
     String getName();
@@ -45,7 +46,7 @@ public interface World {
     /**
      * Set a block in the world.
      *
-     * @param loc The {@link Location}.
+     * @param loc   The {@link Location}.
      * @param block The {@link Block}.
      */
     void setBlockAt(Location loc, Block block);

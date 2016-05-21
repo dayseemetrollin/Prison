@@ -27,7 +27,7 @@ package io.github.sirfaizdat.prison.internal.world;
 public class Location {
 
     private World world;
-    private double x,y, z;
+    private double x, y, z;
     private float pitch, yaw;
 
     public Location(World world, double x, double y, double z, float pitch, float yaw) {

@@ -18,6 +18,7 @@
 
 package io.github.sirfaizdat.prison.spigot;
 
+import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
 import io.github.sirfaizdat.prison.internal.events.EventListener;
 import io.github.sirfaizdat.prison.internal.events.EventType;
 import io.github.sirfaizdat.prison.internal.Platform;
@@ -26,12 +27,12 @@ import io.github.sirfaizdat.prison.internal.world.World;
 import io.github.sirfaizdat.prison.utils.ChatColor;
 import io.github.sirfaizdat.prison.utils.TextUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
 import java.io.File;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,7 @@ import java.util.stream.Collectors;
 public class SpigotPlatform implements Platform {
 
     private SpigotPrison spigotPrison;
+    private List<PluginCommand> commands = new ArrayList<>();
 
     public SpigotPlatform(SpigotPrison spigotPrison) {
         this.spigotPrison = spigotPrison;
@@ -54,6 +56,22 @@ public class SpigotPlatform implements Platform {
     @Override
     public void listen(EventType type, EventListener runnable) {
         spigotPrison.listener.register(type, runnable);
+    }
+
+    @Override
+    public void registerCommand(PluginCommand command) {
+        spigotPrison.commandMap.register(command.getLabel(), "prison", new Command(command.getLabel(), command.getDescription(), command.getUsage(), Arrays.asList()) {
+            @Override
+            public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+                return spigotPrison.prison.getCommandHandler().onCommand(new SpigotCommandSender(sender), command, commandLabel, args);
+            }
+        });
+        commands.add(command);
+    }
+
+    @Override
+    public List<PluginCommand> getCommands() {
+        return commands;
     }
 
     @Override
@@ -95,6 +113,11 @@ public class SpigotPlatform implements Platform {
     @Override
     public File getPluginFolder() {
         return spigotPrison.getDataFolder();
+    }
+
+    @Override
+    public String getPluginVersion() {
+        return spigotPrison.getDescription().getVersion();
     }
 
 }

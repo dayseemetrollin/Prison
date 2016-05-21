@@ -58,12 +58,24 @@ public interface CommandSender {
     void sendMessage(String message);
 
     /**
-     * Sen multiple messages to the command sender.
+     * Send multiple messages to the command sender.
      * Each entry in the array is sent on a new line.
      *
      * @param messages The messages to send.
      */
     void sendMessage(String[] messages);
+
+    /**
+     * Send a raw JSON message to the command sender.
+     */
+    void sendRaw(String json);
+
+    /**
+     * Dispatch a command as this command sender.
+     *
+     * @param command The command, without the '/'-prefix.
+     */
+    void dispatchCommand(String command);
 
     /**
      * The type of command sender.

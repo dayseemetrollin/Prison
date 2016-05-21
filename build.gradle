@@ -66,14 +66,12 @@ subprojects {
     dependencies {
         compile 'org.apache.commons:commons-lang3:3.4'
         compile 'com.google.guava:guava:19.0'
-        compile 'com.sk89q.intake:intake:4.0-SNAPSHOT'
         testCompile 'junit:junit:4.12'
     }
 
     shadowJar {
         classifier 'dist'
         dependencies {
-            include(dependency('com.sk89q.intake:intake:4.0-SNAPSHOT'))
         }
     }
 

@@ -23,28 +23,47 @@ import io.github.sirfaizdat.prison.internal.item.ItemStack;
 import io.github.sirfaizdat.prison.internal.world.Location;
 import io.github.sirfaizdat.prison.internal.world.Material;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.Field;
 
 /**
  * @author SirFaizdat
  */
 public class SpigotPrison extends JavaPlugin {
 
+    Prison prison;
     SpigotPlatform platform;
     SpigotListener listener;
+    CommandMap commandMap;
 
     @Override
     public void onEnable() {
+        initCommandMap();
         platform = new SpigotPlatform(this);
         listener = new SpigotListener(this);
-        new Prison(platform);
-
+        prison = new Prison(platform);
     }
 
     @Override
     public void onDisable() {
     }
 
+    private void initCommandMap() {
+        final Field bukkitCommandMap;
+        try {
+            bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+
+            bukkitCommandMap.setAccessible(true);
+            commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            platform.log("&c&lReflection error: &7Ensure that you're using the latest version of Spigot and Prison.");
+            e.printStackTrace();
+        }
+    }
     // Wrapper-ing methods
 
     public static Location wrapLocation(org.bukkit.Location location) {

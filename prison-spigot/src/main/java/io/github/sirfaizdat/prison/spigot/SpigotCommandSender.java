@@ -21,6 +21,7 @@ package io.github.sirfaizdat.prison.spigot;
 import io.github.sirfaizdat.prison.internal.entity.CommandSender;
 import io.github.sirfaizdat.prison.utils.ChatColor;
 import io.github.sirfaizdat.prison.utils.TextUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.entity.Player;
 
@@ -66,4 +67,16 @@ public class SpigotCommandSender implements CommandSender {
     public void sendMessage(String[] messages) {
         for (String message : messages) sendMessage(message);
     }
+
+    @Override
+    public void sendRaw(String json) {
+        // I know, I know, this is bad practice - but it beats using *shudders* NMS code.
+        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + bCommandSender.getName() + " " + json);
+    }
+
+    @Override
+    public void dispatchCommand(String command) {
+        Bukkit.getServer().dispatchCommand(bCommandSender, command);
+    }
+
 }
