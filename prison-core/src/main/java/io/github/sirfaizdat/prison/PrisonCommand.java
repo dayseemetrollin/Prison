@@ -21,7 +21,7 @@ package io.github.sirfaizdat.prison;
 import io.github.sirfaizdat.prison.internal.commands.Command;
 import io.github.sirfaizdat.prison.internal.entity.CommandSender;
 import io.github.sirfaizdat.prison.utils.ChatColor;
-import mkremins.fanciful.FancyMessage;
+import io.github.sirfaizdat.prison.internal.chat.FancyMessage;
 
 /**
  * @author SirFaizdat

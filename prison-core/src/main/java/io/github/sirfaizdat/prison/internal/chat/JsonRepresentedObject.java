@@ -1,4 +1,4 @@
-package mkremins.fanciful;
+package io.github.sirfaizdat.prison.internal.chat;
 
 import com.google.gson.stream.JsonWriter;
 

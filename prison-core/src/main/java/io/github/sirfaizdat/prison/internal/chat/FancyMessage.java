@@ -1,22 +1,4 @@
-/*
- * Prison is a Minecraft plugin for the prison gamemode.
- * Copyright (C) 2016 SirFaizdat
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-package mkremins.fanciful;
+package io.github.sirfaizdat.prison.internal.chat;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -27,13 +9,10 @@ import io.github.sirfaizdat.prison.Prison;
 import io.github.sirfaizdat.prison.internal.entity.CommandSender;
 import io.github.sirfaizdat.prison.internal.entity.Player;
 import io.github.sirfaizdat.prison.utils.ChatColor;
-import net.amoebaman.util.ArrayWrapper;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
-
-import static mkremins.fanciful.TextualComponent.rawText;
 
 /**
  * Represents a formattable message. Such messages can use elements such as colors, formatting codes, hover and click data, and other features provided by the vanilla Minecraft <a href="http://minecraft.gamepedia.com/Tellraw#Raw_JSON_Text">JSON message formatter</a>.
@@ -69,7 +48,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      * @param firstPartText The existing text in the message.
      */
     public FancyMessage(final String firstPartText) {
-        this(rawText(firstPartText));
+        this(TextualComponent.rawText(firstPartText));
     }
 
     public FancyMessage(final TextualComponent firstPartText) {
@@ -94,7 +73,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      */
     public FancyMessage text(String text) {
         MessagePart latest = latest();
-        latest.text = rawText(text);
+        latest.text = TextualComponent.rawText(text);
         dirty = true;
         return this;
     }
@@ -296,7 +275,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
                     }
                 }
                 if (i != lines.length - 1) {
-                    result.messageParts.add(new MessagePart(rawText("\n")));
+                    result.messageParts.add(new MessagePart(TextualComponent.rawText("\n")));
                 }
             } catch (CloneNotSupportedException e) {
                 Prison.instance.getPlatform().log("Failed to clone object");
@@ -383,7 +362,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      * @return This builder instance.
      */
     public FancyMessage then(final String text) {
-        return then(rawText(text));
+        return then(TextualComponent.rawText(text));
     }
 
     /**

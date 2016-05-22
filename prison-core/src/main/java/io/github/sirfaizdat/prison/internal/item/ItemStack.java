@@ -50,7 +50,6 @@ public class ItemStack {
         this(material, (short) 0, amount);
     }
 
-
     public Material getMaterial() {
         return material;
     }
