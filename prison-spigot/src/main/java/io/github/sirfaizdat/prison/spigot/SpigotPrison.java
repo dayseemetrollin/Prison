@@ -19,16 +19,17 @@
 package io.github.sirfaizdat.prison.spigot;
 
 import io.github.sirfaizdat.prison.Prison;
+import io.github.sirfaizdat.prison.internal.item.Enchantment;
 import io.github.sirfaizdat.prison.internal.item.ItemStack;
 import io.github.sirfaizdat.prison.internal.world.Location;
 import io.github.sirfaizdat.prison.internal.world.Material;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author SirFaizdat
@@ -64,6 +65,7 @@ public class SpigotPrison extends JavaPlugin {
             e.printStackTrace();
         }
     }
+
     // Wrapper-ing methods
 
     public static Location wrapLocation(org.bukkit.Location location) {
@@ -75,13 +77,25 @@ public class SpigotPrison extends JavaPlugin {
     }
 
     public static ItemStack wrapItemStack(org.bukkit.inventory.ItemStack itemStack) {
-        // TODO Implement enchants
-        return new ItemStack(Material.valueOf(itemStack.getType().name()), itemStack.getData().getData(), itemStack.getAmount());
+        return new ItemStack(Material.valueOf(itemStack.getType().name()), itemStack.getData().getData(), itemStack.getAmount(), wrapEnchants(itemStack.getEnchantments()));
     }
 
     public static org.bukkit.inventory.ItemStack wrapItemStack(ItemStack itemStack) {
-        // TODO Implement enchants
-        return new org.bukkit.inventory.ItemStack(org.bukkit.Material.valueOf(itemStack.getMaterial().name()), itemStack.getAmount(), itemStack.getData());
+        org.bukkit.inventory.ItemStack ret =  new org.bukkit.inventory.ItemStack(org.bukkit.Material.valueOf(itemStack.getMaterial().name()), itemStack.getAmount(), itemStack.getData());
+        ret.addEnchantments(wrapEnchantsToBukkit(itemStack.getEnchantments()));
+        return ret;
+    }
+
+    private static Map<Enchantment, Integer> wrapEnchants(Map<org.bukkit.enchantments.Enchantment, Integer> enchants) {
+        Map<Enchantment, Integer> ret = new HashMap<>();
+        enchants.forEach((enchantment, level) -> ret.put(Enchantment.getByName(enchantment.getName()), level));
+        return ret;
+    }
+
+    private static Map<org.bukkit.enchantments.Enchantment, Integer> wrapEnchantsToBukkit(Map<Enchantment, Integer> enchants) {
+        Map<org.bukkit.enchantments.Enchantment, Integer> ret = new HashMap<>();
+        enchants.forEach((enchantment, level) -> ret.put(org.bukkit.enchantments.Enchantment.getByName(enchantment.getName()), level));
+        return ret;
     }
 
 }

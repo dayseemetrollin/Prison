@@ -20,8 +20,8 @@ package io.github.sirfaizdat.prison.internal.item;
 
 import io.github.sirfaizdat.prison.internal.world.Material;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents an item stack in the game.
@@ -33,9 +33,9 @@ public class ItemStack {
     private Material material;
     private short data;
     private int amount;
-    private List<Enchantment> enchantments;
+    private Map<Enchantment, Integer> enchantments;
 
-    public ItemStack(Material material, short data, int amount, List<Enchantment> enchantments) {
+    public ItemStack(Material material, short data, int amount, Map<Enchantment, Integer> enchantments) {
         this.material = material;
         this.data = data;
         this.amount = amount;
@@ -43,7 +43,7 @@ public class ItemStack {
     }
 
     public ItemStack(Material material, short data, int amount) {
-        this(material, data, amount, new ArrayList<>());
+        this(material, data, amount, new HashMap<>());
     }
 
     public ItemStack(Material material, int amount) {
@@ -63,8 +63,10 @@ public class ItemStack {
         return amount;
     }
 
-    public List<Enchantment> getEnchantments() {
+    public Map<Enchantment, Integer> getEnchantments() {
         return enchantments;
     }
+
+    public void addEnchantment(Enchantment enchantment, int level) { enchantments.put(enchantment, level); }
 
 }

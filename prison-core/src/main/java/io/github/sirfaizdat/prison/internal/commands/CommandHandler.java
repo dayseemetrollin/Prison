@@ -38,15 +38,9 @@ public class CommandHandler {
     private Map<Class<?>, ArgumentHandler<?>> argumentHandlers = new HashMap<Class<?>, ArgumentHandler<?>>();
     private Map<PluginCommand, RootCommand> rootCommands = new HashMap<>();
 
-    private PermissionHandler permissionHandler = new PermissionHandler() {
-        @Override
-        public boolean hasPermission(CommandSender sender, String[] permissions) {
-            for (String perm : permissions) {
-                if (!sender.hasPermission(perm))
-                    return false;
-            }
-            return true;
-        }
+    private PermissionHandler permissionHandler = (sender, permissions) -> {
+        for (String perm : permissions) if (!sender.hasPermission(perm)) return false;
+        return true;
     };
 
     private HelpHandler helpHandler = new HelpHandler() {
@@ -72,7 +66,7 @@ public class CommandHandler {
             ArrayList<String> message = new ArrayList<String>();
 
             if (command.isSet()) {
-                message.add(ChatColor.AQUA + command.getDescription());
+                message.add(ChatColor.DARK_AQUA + command.getDescription());
             }
 
             message.add(getUsage(command));
@@ -86,7 +80,7 @@ public class CommandHandler {
                 }
                 List<Flag> flags = command.getFlags();
                 if (flags.size() > 0) {
-                    message.add(ChatColor.GOLD + "Flags:");
+                    message.add(ChatColor.DARK_AQUA + "Flags:");
                     for (Flag flag : flags) {
                         StringBuilder args = new StringBuilder();
                         for (FlagArgument argument : flag.getArguments()) {
@@ -103,7 +97,7 @@ public class CommandHandler {
 
             List<RegisteredCommand> subcommands = command.getSuffixes();
             if (subcommands.size() > 0) {
-                message.add(ChatColor.GOLD + "Subcommands:");
+                message.add(ChatColor.DARK_AQUA + "Subcommands:");
                 for (RegisteredCommand scommand : subcommands) {
                     message.add(scommand.getUsage());
                 }
