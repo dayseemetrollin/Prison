@@ -58,6 +58,23 @@ public enum EventType {
      * </tbody>
      * </table>
      */
-    PLAYER_QUIT;
+    PLAYER_QUIT,
+
+    /**
+     * Called when a module fails to start.
+     * Event data:
+     * <table>
+     * <col width="35%"/>
+     * <col width="65%"/>
+     * <thead>
+     * <tr><th>Key</th><th>Description</th></tr>
+     * <thead>
+     * <tbody>
+     * <tr><td>"module"</td><td>The {@link io.github.sirfaizdat.prison.internal.modules.Module} involved.</td></tr>
+     * <tr><td>"reason"</td><td>The {@link String} saying why the module failed.</td></tr>
+     * </tbody>
+     * </table>
+     */
+    MODULE_FAIL
 
 }

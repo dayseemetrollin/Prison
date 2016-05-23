@@ -16,21 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.utils;
+package io.github.sirfaizdat.prison.events;
+
+import io.github.sirfaizdat.prison.internal.modules.Module;
 
 /**
+ * Fires when a module fails to start.
+ *
  * @author SirFaizdat
+ * @since 3.0
  */
-public class TextUtils {
+public class ModuleFailEvent implements Event {
 
-    private TextUtils() {}
+    private Module module;
+    private String failReason;
 
-    public static String parse(String message, Object... format) {
-        return ChatColor.translateAlternateColorCodes('&', String.format(message, format));
+    public ModuleFailEvent(Module module, String failReason) {
+        this.module = module;
+        this.failReason = failReason;
     }
 
-    public static String dotIfNotPresent(String msg, String color) {
-        return color + (msg.endsWith(".") ? "" : ".");
+    public Module getModule() {
+        return module;
+    }
+
+    public String getFailReason() {
+        return failReason;
     }
 
 }

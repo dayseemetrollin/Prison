@@ -18,12 +18,15 @@
 
 package io.github.sirfaizdat.prison.spigot;
 
+import io.github.sirfaizdat.prison.events.Event;
+import io.github.sirfaizdat.prison.events.ModuleFailEvent;
+import io.github.sirfaizdat.prison.internal.Platform;
 import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
+import io.github.sirfaizdat.prison.internal.entity.Player;
 import io.github.sirfaizdat.prison.internal.events.EventListener;
 import io.github.sirfaizdat.prison.internal.events.EventType;
-import io.github.sirfaizdat.prison.internal.Platform;
-import io.github.sirfaizdat.prison.internal.entity.Player;
 import io.github.sirfaizdat.prison.internal.world.World;
+import io.github.sirfaizdat.prison.spigot.events.SpigotModuleFailEvent;
 import io.github.sirfaizdat.prison.utils.ChatColor;
 import io.github.sirfaizdat.prison.utils.TextUtils;
 import org.bukkit.Bukkit;
@@ -56,6 +59,12 @@ public class SpigotPlatform implements Platform {
     @Override
     public void listen(EventType type, EventListener runnable) {
         spigotPrison.listener.register(type, runnable);
+    }
+
+    @Override
+    public void fire(Event event) {
+        if(event instanceof ModuleFailEvent) Bukkit.getServer().getPluginManager().callEvent(new SpigotModuleFailEvent((ModuleFailEvent) event));
+        else log("&c&lError: &7Core event " + event.getClass().getName() + " attempted to fire, but the implementation does not support it!");
     }
 
     @Override
@@ -106,8 +115,7 @@ public class SpigotPlatform implements Platform {
 
     @Override
     public List<Player> getOnlinePlayers() {
-        List<Player> ret = Bukkit.getOnlinePlayers().stream().map((Function<org.bukkit.entity.Player, SpigotPlayer>) SpigotPlayer::new).collect(Collectors.toList());
-        return ret;
+        return Bukkit.getOnlinePlayers().stream().map((Function<org.bukkit.entity.Player, SpigotPlayer>) SpigotPlayer::new).collect(Collectors.toList());
     }
 
     @Override

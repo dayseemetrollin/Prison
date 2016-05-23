@@ -51,6 +51,7 @@ public class SpigotPrison extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        prison.cleanUp();
     }
 
     private void initCommandMap() {

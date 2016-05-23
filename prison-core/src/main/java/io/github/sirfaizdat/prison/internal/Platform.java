@@ -18,6 +18,7 @@
 
 package io.github.sirfaizdat.prison.internal;
 
+import io.github.sirfaizdat.prison.events.Event;
 import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
 import io.github.sirfaizdat.prison.internal.entity.Player;
 import io.github.sirfaizdat.prison.internal.events.EventListener;
@@ -54,6 +55,13 @@ public interface Platform {
      * @param runnable The {@link EventListener} which is called when the event occurs.
      */
     void listen(EventType type, EventListener runnable);
+
+    /**
+     * Fires an event.
+     *
+     * @param event The {@link Event} to fire.
+     */
+    void fire(Event event);
 
     /**
      * Registers a command with the server implementation.

@@ -21,6 +21,7 @@ package io.github.sirfaizdat.prison.spigot;
 import io.github.sirfaizdat.prison.internal.events.EventData;
 import io.github.sirfaizdat.prison.internal.events.EventListener;
 import io.github.sirfaizdat.prison.internal.events.EventType;
+import io.github.sirfaizdat.prison.spigot.events.SpigotModuleFailEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -35,7 +36,6 @@ import java.util.Map;
  * Listens for various events, and calls the {@link Runnable}s registered by prison-core when necessary.
  *
  * @author SirFaizdat
- * @since 3.0
  */
 public class SpigotListener implements Listener {
 
@@ -49,7 +49,7 @@ public class SpigotListener implements Listener {
 
     public void register(EventType type, EventListener listener) {
         // Create the list if it's not already there.
-        if(!listeners.containsKey(type)) {
+        if (!listeners.containsKey(type)) {
             listeners.put(type, Arrays.asList(listener));
             return;
         }
@@ -61,7 +61,7 @@ public class SpigotListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if(!listeners.containsKey(EventType.PLAYER_JOIN)) return;
+        if (!listeners.containsKey(EventType.PLAYER_JOIN)) return;
         EventData data = new EventData();
         data.put("player", spigotPrison.platform.getPlayer(e.getPlayer().getUniqueId()));
         listeners.get(EventType.PLAYER_JOIN).forEach(eventListener -> eventListener.handle(data));
@@ -69,10 +69,19 @@ public class SpigotListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        if(!listeners.containsKey(EventType.PLAYER_QUIT)) return;
+        if (!listeners.containsKey(EventType.PLAYER_QUIT)) return;
         EventData data = new EventData();
         data.put("player", e.getPlayer());
         listeners.get(EventType.PLAYER_QUIT).forEach(eventListener -> eventListener.handle(data));
+    }
+
+    @EventHandler
+    public void onModuleFail(SpigotModuleFailEvent e) {
+        if (!listeners.containsKey(EventType.MODULE_FAIL)) return;
+        EventData data = new EventData();
+        data.put("module", e.getModule());
+        data.put("reason", e.getFailReason());
+        listeners.get(EventType.MODULE_FAIL).forEach(eventListener -> eventListener.handle(data));
     }
 
 }

@@ -16,21 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.utils;
+package io.github.sirfaizdat.prison;
+
+import io.github.sirfaizdat.prison.internal.modules.Module;
 
 /**
  * @author SirFaizdat
  */
-public class TextUtils {
+public class TestModule extends Module {
 
-    private TextUtils() {}
-
-    public static String parse(String message, Object... format) {
-        return ChatColor.translateAlternateColorCodes('&', String.format(message, format));
+    public TestModule() {
+        super("Test");
     }
 
-    public static String dotIfNotPresent(String msg, String color) {
-        return color + (msg.endsWith(".") ? "" : ".");
+    @Override
+    public void init() {
+        fail("I just feel like failing.");
+    }
+
+    @Override
+    public void deinit() {
+
     }
 
 }

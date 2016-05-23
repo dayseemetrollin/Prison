@@ -24,6 +24,7 @@ import com.google.gson.GsonBuilder;
 import io.github.sirfaizdat.prison.internal.Platform;
 import io.github.sirfaizdat.prison.internal.commands.CommandHandler;
 import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
+import io.github.sirfaizdat.prison.internal.modules.ModuleManager;
 import io.github.sirfaizdat.prison.utils.Alerts;
 
 import java.io.File;
@@ -46,6 +47,7 @@ public class Prison {
     private Configuration configuration;
     private Alerts alerts;
     private CommandHandler commandHandler;
+    private ModuleManager moduleManager;
 
     public Prison(Platform platform) {
         instance = this;
@@ -56,6 +58,13 @@ public class Prison {
 
         this.commandHandler = new CommandHandler();
         commandHandler.registerCommands(new PrisonCommand());
+
+        moduleManager = new ModuleManager();
+        moduleManager.register(new TestModule());
+    }
+
+    public void cleanUp() {
+        moduleManager.unregisterAll();
     }
 
     private void loadConfig() {

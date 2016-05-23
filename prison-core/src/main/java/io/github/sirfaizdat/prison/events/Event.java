@@ -16,21 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.utils;
+package io.github.sirfaizdat.prison.events;
 
 /**
+ * Represents a custom Prison event.
+ *
  * @author SirFaizdat
+ * @since 3.0
  */
-public class TextUtils {
-
-    private TextUtils() {}
-
-    public static String parse(String message, Object... format) {
-        return ChatColor.translateAlternateColorCodes('&', String.format(message, format));
-    }
-
-    public static String dotIfNotPresent(String msg, String color) {
-        return color + (msg.endsWith(".") ? "" : ".");
-    }
-
+public interface Event {
 }
