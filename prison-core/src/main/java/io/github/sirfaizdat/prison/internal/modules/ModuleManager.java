@@ -70,6 +70,11 @@ public class ModuleManager {
         modules.clear();
     }
 
+    public Module getModule(String name) {
+        for(Module m : modules) if(m.getName().equalsIgnoreCase(name)) return m;
+        return null;
+    }
+
     private EventListener onModuleFail() {
         return data -> {
             Module module = (Module) data.get("module");

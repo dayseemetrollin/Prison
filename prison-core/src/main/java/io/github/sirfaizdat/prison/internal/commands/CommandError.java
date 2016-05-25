@@ -19,6 +19,7 @@
 package io.github.sirfaizdat.prison.internal.commands;
 
 import io.github.sirfaizdat.prison.utils.ChatColor;
+import io.github.sirfaizdat.prison.utils.TextUtils;
 
 public class CommandError extends Exception {
     private static final long serialVersionUID = 1L;
@@ -36,9 +37,7 @@ public class CommandError extends Exception {
 
     public String getColorizedMessage() {
         String msg = getMessage();
-        msg = msg.replaceAll("\\[", ChatColor.AQUA + "[");
-        msg = msg.replaceAll("\\]", "]" + ChatColor.RED);
-        return ChatColor.RED + msg;
+        return TextUtils.parse(TextUtils.dotIfNotPresent("&c&lOops! &7%s", msg), "&7");
     }
 
     public boolean showUsage() {

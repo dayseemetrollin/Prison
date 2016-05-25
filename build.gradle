@@ -21,7 +21,7 @@ println """
 You are building Prison.
 
 Note that you are probably using
-a developmnt build and therefore
+a development build and therefore
 a buggy build. Don't use it on a
 production server unless you know
 what you are doing! You have been
@@ -66,12 +66,14 @@ subprojects {
     dependencies {
         compile 'org.apache.commons:commons-lang3:3.4'
         compile 'com.google.guava:guava:19.0'
+        compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
         testCompile 'junit:junit:4.12'
     }
 
     shadowJar {
         classifier 'dist'
         dependencies {
+            include(dependency(group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'))
         }
     }
 

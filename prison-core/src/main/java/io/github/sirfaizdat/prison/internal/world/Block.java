@@ -18,6 +18,8 @@
 
 package io.github.sirfaizdat.prison.internal.world;
 
+import io.github.sirfaizdat.prison.utils.TextUtils;
+
 /**
  * Represents a block in the world.
  *
@@ -37,6 +39,20 @@ public class Block {
     public Block(Material material) {
         this.material = material;
         this.data = 0;
+    }
+
+    public Block(String s) {
+        String[] split = TextUtils.packAndSplit(s, ":");
+        this.material = Material.matchMaterial(split[0]);
+        if (material == null) throw new IllegalArgumentException(split[0] + " is not a material");
+
+        if (split.length < 2) data = 0;
+        else
+            try {
+                this.data = Byte.parseByte(split[1]);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException(split[1] + " is not a number");
+            }
     }
 
     public Material getMaterial() {
@@ -74,4 +90,8 @@ public class Block {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return material.name() + ":" + data;
+    }
 }

@@ -25,7 +25,7 @@ import io.github.sirfaizdat.prison.internal.Platform;
 import io.github.sirfaizdat.prison.internal.commands.CommandHandler;
 import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
 import io.github.sirfaizdat.prison.internal.modules.ModuleManager;
-import io.github.sirfaizdat.prison.mines.Mines;
+import io.github.sirfaizdat.prison.mines.MinesModule;
 import io.github.sirfaizdat.prison.utils.Alerts;
 
 import java.io.File;
@@ -53,15 +53,13 @@ public class Prison {
     public Prison(Platform platform) {
         instance = this;
         this.platform = platform;
-        this.alerts = new Alerts();
-
         this.loadConfig();
-
+        this.alerts = new Alerts();
         this.commandHandler = new CommandHandler();
-        commandHandler.registerCommands(new PrisonCommand());
-
         moduleManager = new ModuleManager();
-        moduleManager.register(new Mines());
+
+        commandHandler.registerCommands(new PrisonCommand());
+        moduleManager.register(new MinesModule());
     }
 
     public void cleanUp() {
@@ -124,6 +122,10 @@ public class Prison {
 
     public CommandHandler getCommandHandler() {
         return commandHandler;
+    }
+
+    public ModuleManager getModuleManager() {
+        return moduleManager;
     }
 
     public PluginCommand getCommand(String label) {

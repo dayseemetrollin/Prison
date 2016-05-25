@@ -19,6 +19,7 @@
 package io.github.sirfaizdat.prison.internal.commands;
 
 import io.github.sirfaizdat.prison.internal.entity.CommandSender;
+import io.github.sirfaizdat.prison.internal.entity.Player;
 import io.github.sirfaizdat.prison.utils.ChatColor;
 
 import java.lang.annotation.Annotation;
@@ -251,21 +252,21 @@ public class RegisteredCommand {
 
             //If neither does not exist throw
             if (commandArgAnnotation == null && flagArgAnnotation == null)
-                throw new RegisterCommandMethodException(method, "The command annonation is present on a method, however one of the parameters is not annotated.");
+                throw new RegisterCommandMethodException(method, "The command annotation is present on a method, however one of the parameters is not annotated.");
 
             Flag flag = null;
 
             if (flagArgAnnotation != null) {
                 flag = this.flagsByName.get(flagArgAnnotation.value());
                 if (flag == null)
-                    throw new RegisterCommandMethodException(method, "The flag annonation is present on a parameter, however the flag is not defined in the flags annonation.");
+                    throw new RegisterCommandMethodException(method, "The flag annotation is present on a parameter, however the flag is not defined in the flags annotation.");
             }
 
             Class<?> argumentClass = methodParameters[i];
 
             if (commandArgAnnotation == null) {
                 if (argumentClass != boolean.class && argumentClass != Boolean.class)
-                    throw new RegisterCommandMethodException(method, "The flag annonation is present on a parameter without the arg annonation, however the parameter type is not an boolean.");
+                    throw new RegisterCommandMethodException(method, "The flag annotation is present on a parameter without the arg annonation, however the parameter type is not an boolean.");
 
                 methodArguments.add(flag);
 

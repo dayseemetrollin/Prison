@@ -16,31 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.mines;
+package io.github.sirfaizdat.prison.mines.resets;
 
 import io.github.sirfaizdat.prison.Prison;
-import io.github.sirfaizdat.prison.internal.modules.Module;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author SirFaizdat
  */
-public class Mines extends Module {
+public class ResetMethods {
 
-    public Mines() {
-        super("Mines");
+    private List<ResetMethod> resetMethods = new ArrayList<>();
+    private static ResetMethods instance;
+
+    public static ResetMethods getInstance() {
+        if(instance == null) instance = new ResetMethods();
+        return instance;
     }
 
-    @Override
-    public void init() {
-        if(!Prison.instance.getPlatform().getSelectionIntegration().hasIntegrated()) {
-            fail("&cNo selection plugin found");
-            return;
-        }
+    public void addResetMethod(ResetMethod method) {
+        resetMethods.add(method);
     }
 
-    @Override
-    public void deinit() {
+    public ResetMethod getResetMethodByName(String name) {
+        for(ResetMethod resetMethod : resetMethods) if (resetMethod.name().equalsIgnoreCase(name)) return resetMethod;
+        return null;
+    }
 
+    public List<ResetMethod> getResetMethods() {
+        return resetMethods;
     }
 
 }

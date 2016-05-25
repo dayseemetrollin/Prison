@@ -74,6 +74,7 @@ public class SpigotPlatform implements Platform {
         spigotPrison.commandMap.register(command.getLabel(), "prison", new Command(command.getLabel(), command.getDescription(), command.getUsage(), Arrays.asList()) {
             @Override
             public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+                if(sender instanceof org.bukkit.entity.Player) return spigotPrison.prison.getCommandHandler().onCommand(new SpigotPlayer((org.bukkit.entity.Player) sender), command, commandLabel, args);
                 return spigotPrison.prison.getCommandHandler().onCommand(new SpigotCommandSender(sender), command, commandLabel, args);
             }
         });

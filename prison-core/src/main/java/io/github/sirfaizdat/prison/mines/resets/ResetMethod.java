@@ -16,22 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison;
+package io.github.sirfaizdat.prison.mines.resets;
+
+import io.github.sirfaizdat.prison.mines.Mine;
 
 /**
- * Represents Prison's configuration.
- * Contains all of the keys and their default values.
+ * Handles the resetting of a mine.
  *
  * @author SirFaizdat
- * @since 3.0
  */
-public class Configuration {
+public interface ResetMethod {
 
-    public static final int VERSION = 0; // For everyone to reference
-    public int version = VERSION; // For the configuration file to store
+    boolean run(Mine mine);
 
-    // Entries
-
-    public String defaultResetMethod = "total";
+    String name();
 
 }

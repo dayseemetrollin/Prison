@@ -52,6 +52,10 @@ public class Location {
         this.yaw = yaw;
     }
 
+    public Location(double x, double y, double z) {
+        this(x, y, z, 0.0f, 0.0f);
+    }
+
     public World getWorld() {
         return world;
     }

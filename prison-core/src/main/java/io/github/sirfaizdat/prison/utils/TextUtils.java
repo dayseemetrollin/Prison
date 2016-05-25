@@ -33,4 +33,8 @@ public class TextUtils {
         return color + (msg.endsWith(".") ? "" : ".");
     }
 
+    public static String[] packAndSplit(String message, String delimeter) {
+        return message.replaceAll(" ", "").split(delimeter);
+    }
+
 }
