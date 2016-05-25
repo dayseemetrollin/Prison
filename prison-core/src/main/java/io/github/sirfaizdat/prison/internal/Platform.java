@@ -23,6 +23,7 @@ import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
 import io.github.sirfaizdat.prison.internal.entity.Player;
 import io.github.sirfaizdat.prison.internal.events.EventListener;
 import io.github.sirfaizdat.prison.internal.events.EventType;
+import io.github.sirfaizdat.prison.internal.integration.SelectionIntegration;
 import io.github.sirfaizdat.prison.internal.world.World;
 
 import java.io.File;
@@ -38,6 +39,8 @@ import java.util.UUID;
  */
 public interface Platform {
 
+    // Tasks
+
     /**
      * Schedules a task to be run once every interval.
      *
@@ -47,6 +50,8 @@ public interface Platform {
      * @return The ID of the task, or -1 if the scheduling failed.
      */
     int schedule(long delay, long period, Runnable task);
+
+    // Events
 
     /**
      * Registers a listener for an event type.
@@ -63,6 +68,8 @@ public interface Platform {
      */
     void fire(Event event);
 
+    // Commands
+
     /**
      * Registers a command with the server implementation.
      *
@@ -74,6 +81,8 @@ public interface Platform {
      * Returns a list of all registered commands.
      */
     List<PluginCommand> getCommands();
+
+    // Plugin operations
 
     /**
      * Reloads all Prison data, such as configuration.
@@ -87,6 +96,8 @@ public interface Platform {
      * @param format  The values to insert into {@link String#format(String, Object...)}, which will be called on the message before it is colored.
      */
     void log(String message, Object... format);
+
+    // World
 
     /**
      * Returns a world instance for the specified name.
@@ -117,6 +128,8 @@ public interface Platform {
      */
     List<Player> getOnlinePlayers();
 
+    // Plugin information
+
     /**
      * Returns the folder where the plugin should store data.
      * Implementations must initializer the data folder before it's provided.
@@ -127,5 +140,12 @@ public interface Platform {
      * Returns the version of Prison.
      */
     String getPluginVersion();
+
+    // Integration
+
+    /**
+     * Returns the {@link SelectionIntegration} object from the implementation.
+     */
+    SelectionIntegration getSelectionIntegration();
 
 }

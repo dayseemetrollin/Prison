@@ -16,27 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison;
+package io.github.sirfaizdat.prison.internal.integration;
 
-import io.github.sirfaizdat.prison.internal.modules.Module;
+import io.github.sirfaizdat.prison.internal.entity.Player;
+
+import java.util.Optional;
 
 /**
+ * Integrate with the selection plugin on the server.
+ * A good example is WorldEdit, but anything can be used.
+ *
  * @author SirFaizdat
+ * @since 3.0
  */
-public class TestModule extends Module {
+public interface SelectionIntegration {
 
-    public TestModule() {
-        super("Test");
-    }
+    /**
+     * Returns a player's selection.
+     * If the player hasn't made a selection, the {@link Optional} will be null.
+     * @param player The {@link Player} to retrieve the selection from.
+     */
+    Optional<Selection> getSelection(Player player);
 
-    @Override
-    public void init() {
-        fail("I just feel like failing.");
-    }
-
-    @Override
-    public void deinit() {
-
-    }
+    /**
+     * Returns true if the integration is ready for use.
+     */
+    boolean hasIntegrated();
 
 }

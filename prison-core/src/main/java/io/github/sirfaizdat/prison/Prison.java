@@ -25,6 +25,7 @@ import io.github.sirfaizdat.prison.internal.Platform;
 import io.github.sirfaizdat.prison.internal.commands.CommandHandler;
 import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
 import io.github.sirfaizdat.prison.internal.modules.ModuleManager;
+import io.github.sirfaizdat.prison.mines.Mines;
 import io.github.sirfaizdat.prison.utils.Alerts;
 
 import java.io.File;
@@ -42,7 +43,7 @@ import java.util.Date;
 public class Prison {
 
     public static Prison instance;
-    public static Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+    private Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
     private Platform platform;
     private Configuration configuration;
     private Alerts alerts;
@@ -60,44 +61,54 @@ public class Prison {
         commandHandler.registerCommands(new PrisonCommand());
 
         moduleManager = new ModuleManager();
-        moduleManager.register(new TestModule());
+        moduleManager.register(new Mines());
     }
 
     public void cleanUp() {
         moduleManager.unregisterAll();
     }
 
+    // Configuration stuff
+
     private void loadConfig() {
         File configFile = new File(getPlatform().getPluginFolder(), "config.json");
         try {
             if (!configFile.exists()) {
-                writeConfig();
+                writeNewConfig();
                 return;
             }
 
             String json = String.join("\n", Files.readLines(configFile, Charset.defaultCharset()));
-            if (!json.toLowerCase().contains("  \"version\": " + Configuration.VERSION)) {
-                // The configuration is out of date
-                String fileName = "old-config-" + new SimpleDateFormat("yyyyMMddhhmm'.json'").format(new Date());
-                configFile.renameTo(new File(getPlatform().getPluginFolder(), fileName)); // Rename the file
-                writeConfig();
-                alerts.alert("&c&lAlert: &7The configuration file has been recreated. I saved your old configuration file for your reference; remember to reconfigure Prison!");
-                return;
-            }
+            if(validateConfigVersion(json, configFile)) return;
             configuration = gson.fromJson(json, Configuration.class);
         } catch (IOException e) {
-            alerts.alert("&c&lAlert: &7I failed to load the configuration file. Check the console for details.");
+            alerts.alert("&c&lAlert: &7Failed to load the configuration file. Check the console for details.");
             getPlatform().log("&cFailed to read/write the config.json file. &8Reason: %s", e.getMessage());
             e.printStackTrace();
         }
 
     }
 
-    private void writeConfig() throws IOException {
+    private void writeNewConfig() throws IOException {
         configuration = new Configuration();
         String json = gson.toJson(configuration);
         Files.write(json, new File(getPlatform().getPluginFolder(), "config.json"), Charset.defaultCharset());
     }
+
+    private boolean validateConfigVersion(String json, File configFile) throws IOException {
+        if (!json.toLowerCase().contains("  \"version\": " + Configuration.VERSION)) { // Hopefully the user won't attempt to change the config line.
+            // The configuration is out of date
+            String fileName = "old-config-" + new SimpleDateFormat("yyyyMMddhhmm'.json'").format(new Date()); // old-config-timestamp.json
+            configFile.renameTo(new File(getPlatform().getPluginFolder(), fileName)); // Rename the file
+            writeNewConfig();
+            alerts.alert("&c&lAlert: &7The configuration file has been recreated. I saved your old configuration file for your reference; remember to reconfigure Prison!");
+            return true;
+        }
+        // The configuration is not out of date
+        return false;
+    }
+
+    // The getters and setters
 
     public Platform getPlatform() {
         return platform;
@@ -125,4 +136,7 @@ public class Prison {
         return getPlatform().getPluginVersion().contains("-SNAPSHOT");
     }
 
+    public Gson getGson() {
+        return gson;
+    }
 }

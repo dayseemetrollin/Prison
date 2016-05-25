@@ -25,8 +25,10 @@ import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
 import io.github.sirfaizdat.prison.internal.entity.Player;
 import io.github.sirfaizdat.prison.internal.events.EventListener;
 import io.github.sirfaizdat.prison.internal.events.EventType;
+import io.github.sirfaizdat.prison.internal.integration.SelectionIntegration;
 import io.github.sirfaizdat.prison.internal.world.World;
 import io.github.sirfaizdat.prison.spigot.events.SpigotModuleFailEvent;
+import io.github.sirfaizdat.prison.spigot.integration.WorldEditIntegration;
 import io.github.sirfaizdat.prison.utils.ChatColor;
 import io.github.sirfaizdat.prison.utils.TextUtils;
 import org.bukkit.Bukkit;
@@ -126,6 +128,11 @@ public class SpigotPlatform implements Platform {
     @Override
     public String getPluginVersion() {
         return spigotPrison.getDescription().getVersion();
+    }
+
+    @Override
+    public SelectionIntegration getSelectionIntegration() {
+        return new WorldEditIntegration();
     }
 
 }
