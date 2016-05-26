@@ -22,6 +22,7 @@ import io.github.sirfaizdat.prison.Prison;
 import io.github.sirfaizdat.prison.internal.modules.Module;
 import io.github.sirfaizdat.prison.mines.resets.ResetMethodTotal;
 import io.github.sirfaizdat.prison.mines.resets.ResetMethods;
+import io.github.sirfaizdat.prison.utils.Alerts;
 import org.json.simple.parser.ParseException;
 
 import java.io.File;
@@ -74,11 +75,12 @@ public class MinesModule extends Module {
                 Mine mine = Mine.load(file);
                 loadedMines.add(mine);
             } catch (IOException | ParseException e) {
+                Prison.instance.getAlerts().alert("&6&lWarning: &7Failed to read the JSON file " + file.getName() + ". Check the console for details. :(");
                 Prison.instance.getPlatform().log("&eAn internal error occurred while attempting to read the JSON " +
                         "file " + file.getName() + ".");
                 e.printStackTrace();
             } catch (MineLoadException e) {
-                Prison.instance.getPlatform().log("&eCouldn't load the mine " + file.getName() + " because " + e.getMessage());
+                Prison.instance.getAlerts().alert("&6&lWarning: &7Failed to load the mine " + file.getName() + " because &6" + e.getMessage());
             }
 
         Prison.instance.getPlatform().log("Loaded " + loadedMines.size() + " mines.");
