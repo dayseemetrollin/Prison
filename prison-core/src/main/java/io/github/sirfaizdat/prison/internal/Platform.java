@@ -51,6 +51,15 @@ public interface Platform {
      */
     int schedule(long delay, long period, Runnable task);
 
+    /**
+     * SChedules a task to be run asynchronously.
+     *
+     * @param delay The delay to wait before starting, in ticks.
+     * @param task  The {@link Runnable} containing the task to run.
+     * @return The ID of the task, or -1 if the scheduling failed.
+     */
+    int scheduleAsync(long delay, Runnable task);
+
     // Events
 
     /**

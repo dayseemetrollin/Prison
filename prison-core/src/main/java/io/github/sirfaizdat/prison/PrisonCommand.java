@@ -57,4 +57,18 @@ public class PrisonCommand {
         sender.sendMessage("&8---- &3/prison alerts &8----");
     }
 
+    @Command(
+            identifier = "prison reload",
+            description = "Reload the configuration.",
+            onlyPlayers = false
+    )
+    public void reloadCommand(CommandSender sender) {
+        sender.sendMessage("&8---- &3/prison reload &8----");
+
+        Prison.instance.loadConfig();
+        sender.sendMessage("&7The configuration has been reloaded.");
+
+        sender.sendMessage("&8---- &3/prison reload &8----");
+    }
+
 }

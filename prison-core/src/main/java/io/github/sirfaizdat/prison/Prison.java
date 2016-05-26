@@ -68,7 +68,7 @@ public class Prison {
 
     // Configuration stuff
 
-    private void loadConfig() {
+    public void loadConfig() {
         File configFile = new File(getPlatform().getPluginFolder(), "config.json");
         try {
             if (!configFile.exists()) {

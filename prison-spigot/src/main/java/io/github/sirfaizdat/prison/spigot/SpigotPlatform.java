@@ -59,6 +59,11 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
+    public int scheduleAsync(long delay, Runnable task) {
+        return spigotPrison.getServer().getScheduler().runTaskLaterAsynchronously(spigotPrison, task, delay).getTaskId();
+    }
+
+    @Override
     public void listen(EventType type, EventListener runnable) {
         spigotPrison.listener.register(type, runnable);
     }

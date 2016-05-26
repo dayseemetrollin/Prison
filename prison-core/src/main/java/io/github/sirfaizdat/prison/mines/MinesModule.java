@@ -20,6 +20,7 @@ package io.github.sirfaizdat.prison.mines;
 
 import io.github.sirfaizdat.prison.Prison;
 import io.github.sirfaizdat.prison.internal.modules.Module;
+import io.github.sirfaizdat.prison.mines.resets.ResetMethodAsync;
 import io.github.sirfaizdat.prison.mines.resets.ResetMethodTotal;
 import io.github.sirfaizdat.prison.mines.resets.ResetMethods;
 import io.github.sirfaizdat.prison.utils.Alerts;
@@ -53,6 +54,7 @@ public class MinesModule extends Module {
         if (!minesDirectory.exists()) minesDirectory.mkdirs();
 
         ResetMethods.getInstance().addResetMethod(new ResetMethodTotal());
+        ResetMethods.getInstance().addResetMethod(new ResetMethodAsync());
 
         loadAll();
         Prison.instance.getCommandHandler().registerCommands(new MinesCommand(this));
