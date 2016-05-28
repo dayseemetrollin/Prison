@@ -18,7 +18,6 @@
 
 package io.github.sirfaizdat.prison;
 
-import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.sirfaizdat.prison.internal.Platform;
@@ -27,12 +26,6 @@ import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
 import io.github.sirfaizdat.prison.internal.modules.ModuleManager;
 import io.github.sirfaizdat.prison.mines.MinesModule;
 import io.github.sirfaizdat.prison.utils.Alerts;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * The entry point for an implementation of Prison.
@@ -45,7 +38,6 @@ public class Prison {
     public static Prison instance;
     private Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
     private Platform platform;
-    private Configuration configuration;
     private Alerts alerts;
     private CommandHandler commandHandler;
     private ModuleManager moduleManager;
@@ -53,57 +45,17 @@ public class Prison {
     public Prison(Platform platform) {
         instance = this;
         this.platform = platform;
-        this.loadConfig();
         this.alerts = new Alerts();
         this.commandHandler = new CommandHandler();
-        moduleManager = new ModuleManager();
+        this.moduleManager = new ModuleManager();
 
+        ConfigurationLoader.getInstance().loadConfiguration();
         commandHandler.registerCommands(new PrisonCommand());
         moduleManager.register(new MinesModule());
     }
 
     public void cleanUp() {
         moduleManager.unregisterAll();
-    }
-
-    // Configuration stuff
-
-    public void loadConfig() {
-        File configFile = new File(getPlatform().getPluginFolder(), "config.json");
-        try {
-            if (!configFile.exists()) {
-                writeNewConfig();
-                return;
-            }
-
-            String json = String.join("\n", Files.readLines(configFile, Charset.defaultCharset()));
-            if(validateConfigVersion(json, configFile)) return;
-            configuration = gson.fromJson(json, Configuration.class);
-        } catch (IOException e) {
-            alerts.alert("&c&lAlert: &7Failed to load the configuration file. Check the console for details.");
-            getPlatform().log("&cFailed to read/write the config.json file. &8Reason: %s", e.getMessage());
-            e.printStackTrace();
-        }
-
-    }
-
-    private void writeNewConfig() throws IOException {
-        configuration = new Configuration();
-        String json = gson.toJson(configuration);
-        Files.write(json, new File(getPlatform().getPluginFolder(), "config.json"), Charset.defaultCharset());
-    }
-
-    private boolean validateConfigVersion(String json, File configFile) throws IOException {
-        if (!json.toLowerCase().contains("  \"version\": " + Configuration.VERSION)) { // Hopefully the user won't attempt to change the config line.
-            // The configuration is out of date
-            String fileName = "old-config-" + new SimpleDateFormat("yyyyMMddhhmm'.json'").format(new Date()); // old-config-timestamp.json
-            configFile.renameTo(new File(getPlatform().getPluginFolder(), fileName)); // Rename the file
-            writeNewConfig();
-            alerts.alert("&c&lAlert: &7The configuration file has been recreated. I saved your old configuration file for your reference; remember to reconfigure Prison!");
-            return true;
-        }
-        // The configuration is not out of date
-        return false;
     }
 
     // The getters and setters
@@ -113,7 +65,7 @@ public class Prison {
     }
 
     public Configuration getConfiguration() {
-        return configuration;
+        return ConfigurationLoader.getInstance().getConfiguration();
     }
 
     public Alerts getAlerts() {
@@ -141,4 +93,5 @@ public class Prison {
     public Gson getGson() {
         return gson;
     }
+
 }

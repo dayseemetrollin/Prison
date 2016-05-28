@@ -57,7 +57,7 @@ public class ResetMethodAsync implements ResetMethod {
                 }
 
         // Generate the new one asynchronously
-        Prison.instance.getPlatform().scheduleAsync(0, () -> AsyncResetCache.getInstance().put(mine, mine.getComposition().mapComposition()));
+        Prison.instance.getPlatform().getScheduler().scheduleAsync(0, () -> AsyncResetCache.getInstance().put(mine, mine.getComposition().mapComposition()));
 
         return true;
     }

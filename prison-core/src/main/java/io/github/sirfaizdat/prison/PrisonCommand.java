@@ -65,7 +65,7 @@ public class PrisonCommand {
     public void reloadCommand(CommandSender sender) {
         sender.sendMessage("&8---- &3/prison reload &8----");
 
-        Prison.instance.loadConfig();
+        ConfigurationLoader.getInstance().loadConfiguration();
         sender.sendMessage("&7The configuration has been reloaded.");
 
         sender.sendMessage("&8---- &3/prison reload &8----");

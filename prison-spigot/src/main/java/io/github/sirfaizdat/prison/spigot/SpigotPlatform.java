@@ -21,6 +21,7 @@ package io.github.sirfaizdat.prison.spigot;
 import io.github.sirfaizdat.prison.events.Event;
 import io.github.sirfaizdat.prison.events.ModuleFailEvent;
 import io.github.sirfaizdat.prison.internal.Platform;
+import io.github.sirfaizdat.prison.internal.Scheduler;
 import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
 import io.github.sirfaizdat.prison.internal.entity.Player;
 import io.github.sirfaizdat.prison.internal.events.EventListener;
@@ -54,13 +55,8 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
-    public int schedule(long delay, long period, Runnable task) {
-        return spigotPrison.getServer().getScheduler().scheduleSyncRepeatingTask(spigotPrison, task, delay, period);
-    }
-
-    @Override
-    public int scheduleAsync(long delay, Runnable task) {
-        return spigotPrison.getServer().getScheduler().runTaskLaterAsynchronously(spigotPrison, task, delay).getTaskId();
+    public Scheduler getScheduler() {
+        return spigotPrison.scheduler;
     }
 
     @Override

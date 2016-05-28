@@ -51,6 +51,7 @@ public class Alerts {
             Optional<Player> playerOptional = (Optional<Player>) data.get("player");
             if (!playerOptional.isPresent()) return;
             Player player = playerOptional.get();
+            player.sendMessage("Hey!");
             if (player.isOp()) alerts.forEach(player::sendMessage);
         };
     }

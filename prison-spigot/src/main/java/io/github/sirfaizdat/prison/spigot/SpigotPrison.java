@@ -40,10 +40,12 @@ public class SpigotPrison extends JavaPlugin {
     SpigotPlatform platform;
     SpigotListener listener;
     CommandMap commandMap;
+    SpigotScheduler scheduler;
 
     @Override
     public void onEnable() {
         initCommandMap();
+        scheduler = new SpigotScheduler(this);
         platform = new SpigotPlatform(this);
         listener = new SpigotListener(this);
         prison = new Prison(platform);
