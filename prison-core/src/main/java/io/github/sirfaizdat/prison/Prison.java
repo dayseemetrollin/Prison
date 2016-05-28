@@ -24,7 +24,6 @@ import io.github.sirfaizdat.prison.internal.Platform;
 import io.github.sirfaizdat.prison.internal.commands.CommandHandler;
 import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
 import io.github.sirfaizdat.prison.internal.modules.ModuleManager;
-import io.github.sirfaizdat.prison.mines.MinesModule;
 import io.github.sirfaizdat.prison.utils.Alerts;
 
 /**
@@ -51,7 +50,6 @@ public class Prison {
 
         ConfigurationLoader.getInstance().loadConfiguration();
         commandHandler.registerCommands(new PrisonCommand());
-        moduleManager.register(new MinesModule());
     }
 
     public void cleanUp() {
