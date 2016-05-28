@@ -16,36 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.internal.integration;
+package io.github.sirfaizdat.prison.utils.adapters;
 
-import io.github.sirfaizdat.prison.internal.entity.Player;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import io.github.sirfaizdat.prison.Prison;
+import io.github.sirfaizdat.prison.internal.world.World;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
- * Integrate with the selection plugin on the server.
- * A good example is WorldEdit, but anything can be used.
- *
  * @author SirFaizdat
- * @since 3.0
  */
-public interface SelectionIntegration {
+public class AdapterWorld extends TypeAdapter<World> {
 
-    /**
-     * Returns a player's selection.
-     * If the player hasn't made a selection, the {@link Optional} will be null.
-     * @param player The {@link Player} to retrieve the selection from.
-     */
-    Optional<Selection> getSelection(Player player);
+    @Override
+    public void write(JsonWriter out, World value) throws IOException {
+        out.value(value.getName());
+    }
 
-    /**
-     * Returns true if the integration is ready for use.
-     */
-    boolean hasIntegrated();
-
-    /**
-     * Returns instructions that are shown to the user when the {@link Selection} is absent.
-     */
-    String getInstructions();
+    @Override
+    public World read(JsonReader in) throws IOException {
+        Optional<World> world = Prison.instance.getPlatform().getWorld(in.nextString());
+        if(!world.isPresent()) return null;
+        return world.get();
+    }
 
 }

@@ -18,6 +18,12 @@
 
 package io.github.sirfaizdat.prison;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.nio.file.Files;
 
 import java.io.File;
@@ -37,10 +43,15 @@ public class ConfigurationLoader {
     private static ConfigurationLoader instance;
     private Configuration configuration;
     private File configFile = new File(Prison.instance.getPlatform().getPluginFolder(), "config.json");
+    private Gson gson;
 
     public static ConfigurationLoader getInstance() {
         if (instance == null) instance = new ConfigurationLoader();
         return instance;
+    }
+
+    public ConfigurationLoader() {
+        gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     }
 
     /**
@@ -79,16 +90,24 @@ public class ConfigurationLoader {
 
     private void writeConfiguration() throws IOException {
         configFile.createNewFile();
-        String json = Prison.instance.getGson().toJson(configuration);
+        String json = gson.toJson(configuration);
         Files.write(configFile.toPath(), json.getBytes());
     }
 
     private void readConfiguration(String json) throws IOException {
-        configuration = Prison.instance.getGson().fromJson(json, Configuration.class);
+        configuration = gson.fromJson(json, Configuration.class);
     }
 
     private boolean isOutdated(String json) {
-        return !json.toLowerCase().contains("  \"version\"" + Configuration.VERSION);
+        // Read only the version value
+        try {
+            JSONObject obj = (JSONObject) new JSONParser().parse(json);
+            int version = Math.toIntExact((long) obj.get("version"));
+            return version != Configuration.VERSION;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void duplicateConfigFile() throws IOException {

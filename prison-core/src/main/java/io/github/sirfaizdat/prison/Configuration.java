@@ -32,6 +32,6 @@ public class Configuration {
 
     // Entries
 
-    public String defaultResetMethod = "total";
+    public String defaultResetMethod = "test";
 
 }

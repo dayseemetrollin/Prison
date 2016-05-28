@@ -18,12 +18,12 @@
 
 package io.github.sirfaizdat.prison;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import io.github.sirfaizdat.prison.internal.Platform;
 import io.github.sirfaizdat.prison.internal.commands.CommandHandler;
 import io.github.sirfaizdat.prison.internal.commands.PluginCommand;
 import io.github.sirfaizdat.prison.internal.modules.ModuleManager;
+import io.github.sirfaizdat.prison.mines.MineCommand;
+import io.github.sirfaizdat.prison.mines.MineModule;
 import io.github.sirfaizdat.prison.utils.Alerts;
 
 /**
@@ -35,7 +35,6 @@ import io.github.sirfaizdat.prison.utils.Alerts;
 public class Prison {
 
     public static Prison instance;
-    private Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
     private Platform platform;
     private Alerts alerts;
     private CommandHandler commandHandler;
@@ -49,7 +48,11 @@ public class Prison {
         this.moduleManager = new ModuleManager();
 
         ConfigurationLoader.getInstance().loadConfiguration();
+
+        moduleManager.register(new MineModule());
+
         commandHandler.registerCommands(new PrisonCommand());
+        commandHandler.registerCommands(new MineCommand());
     }
 
     public void cleanUp() {
@@ -86,10 +89,6 @@ public class Prison {
 
     public boolean isDevBuild() {
         return getPlatform().getPluginVersion().contains("-SNAPSHOT");
-    }
-
-    public Gson getGson() {
-        return gson;
     }
 
 }

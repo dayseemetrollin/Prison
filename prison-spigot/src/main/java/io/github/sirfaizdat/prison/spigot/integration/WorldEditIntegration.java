@@ -51,4 +51,9 @@ public class WorldEditIntegration implements SelectionIntegration {
         return worldEditPlugin != null;
     }
 
+    @Override
+    public String getInstructions() {
+        return "To make a selection, type //wand and select two points.";
+    }
+
 }

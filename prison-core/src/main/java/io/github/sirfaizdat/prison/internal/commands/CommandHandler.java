@@ -24,6 +24,8 @@ import io.github.sirfaizdat.prison.internal.entity.CommandSender;
 import io.github.sirfaizdat.prison.internal.entity.Player;
 import io.github.sirfaizdat.prison.internal.world.Material;
 import io.github.sirfaizdat.prison.internal.world.World;
+import io.github.sirfaizdat.prison.mines.Mine;
+import io.github.sirfaizdat.prison.mines.ResetMethod;
 import io.github.sirfaizdat.prison.utils.ChatColor;
 
 import java.lang.reflect.Method;
@@ -157,6 +159,8 @@ public class CommandHandler {
         registerArgumentHandler(Player.class, new PlayerArgumentHandler());
         registerArgumentHandler(World.class, new WorldArgumentHandler());
         registerArgumentHandler(Material.class, new MaterialArgumentHandler());
+        registerArgumentHandler(Mine.class, new MineArgumentHandler());
+        registerArgumentHandler(ResetMethod.class, new ResetMethodArgumentHandler());
     }
 
     @SuppressWarnings("unchecked")
