@@ -39,6 +39,7 @@ public class Mine {
     private World world;
     private Location start, end;
     private ResetMethod resetMethod;
+    private Map<String, String> extraData;
     private Map<Block, Double> composition;
 
     public Mine(String name, World world, Location start, Location end, ResetMethod resetMethod) {
@@ -48,6 +49,7 @@ public class Mine {
         this.end = end;
         this.resetMethod = resetMethod;
         this.composition = new HashMap<>();
+        this.extraData = new HashMap<>();
     }
 
     public void save(File file) throws IOException {
@@ -105,6 +107,19 @@ public class Mine {
 
     public void removeComposition(Block block) {
         this.composition.remove(block);
+    }
+
+    public Map<String, String> getExtraData() {
+        if(extraData == null) extraData = new HashMap<>();
+        return extraData;
+    }
+
+    public void addExtraData(String key, String value) {
+        extraData.put(key, value);
+    }
+
+    public void removeExtraData(String key) {
+        extraData.remove(key);
     }
 
     @Override

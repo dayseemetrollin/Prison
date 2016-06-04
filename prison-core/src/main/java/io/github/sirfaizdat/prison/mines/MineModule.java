@@ -24,6 +24,8 @@ import io.github.sirfaizdat.prison.Prison;
 import io.github.sirfaizdat.prison.internal.modules.Module;
 import io.github.sirfaizdat.prison.internal.world.World;
 import io.github.sirfaizdat.prison.mines.methods.ResetMethodTest;
+import io.github.sirfaizdat.prison.mines.trigger.TimeTrigger;
+import io.github.sirfaizdat.prison.mines.trigger.Trigger;
 import io.github.sirfaizdat.prison.utils.adapters.AdapterResetMethod;
 import io.github.sirfaizdat.prison.utils.adapters.AdapterWorld;
 
@@ -40,6 +42,7 @@ public class MineModule extends Module {
 
     private List<Mine> mines;
     private List<ResetMethod> resetMethods;
+    private List<Trigger> triggers;
     private File minesFolder;
     private Gson gson;
 
@@ -56,13 +59,26 @@ public class MineModule extends Module {
 
         mines = new ArrayList<>();
         resetMethods = new ArrayList<>();
+        triggers = new ArrayList<>();
         minesFolder = new File(Prison.instance.getPlatform().getPluginFolder(), "mines");
         if (!minesFolder.exists()) minesFolder.mkdir();
 
         gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().registerTypeAdapter(World.class, new AdapterWorld()).registerTypeAdapter(ResetMethod.class, new AdapterResetMethod(this)).create();
 
         addResetMethod(new ResetMethodTest());
+        addTrigger(new TimeTrigger());
         loadAll();
+
+        Prison.instance.getPlatform().getScheduler().scheduleAsyncRepeating(
+                Prison.instance.getConfiguration().triggerCheckTimeTicks,
+                Prison.instance.getConfiguration().triggerCheckTimeTicks,
+                () -> {
+                    for(Mine mine : mines) {
+                        Trigger trigger = getTrigger(mine.getExtraData().get("trigger"));
+                        trigger.shouldReset(mine);
+                    }
+                }
+        );
     }
 
     private void loadAll() {
@@ -74,6 +90,13 @@ public class MineModule extends Module {
             for (File file : files) {
                 String json = new String(Files.readAllBytes(file.toPath()));
                 Mine m = gson.fromJson(json, Mine.class);
+
+                // Default extra data
+                if(!m.getExtraData().containsKey("trigger")) {
+                    m.addExtraData("trigger", Prison.instance.getConfiguration().defaultTrigger);
+                    m.save(file);
+                }
+
                 mines.add(m);
             }
         } catch (IOException e) {
@@ -119,6 +142,19 @@ public class MineModule extends Module {
 
     public void addResetMethod(ResetMethod method) {
         resetMethods.add(method);
+    }
+
+    public List<Trigger> getTriggers() {
+        return triggers;
+    }
+
+    public Trigger getTrigger(String name) {
+        for (Trigger trigger : triggers) if (trigger.name().equalsIgnoreCase(name)) return trigger;
+        return null;
+    }
+
+    public void addTrigger(Trigger trigger) {
+        triggers.add(trigger);
     }
 
 }

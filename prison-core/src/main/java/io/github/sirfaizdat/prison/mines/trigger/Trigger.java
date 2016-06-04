@@ -16,24 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison;
+package io.github.sirfaizdat.prison.mines.trigger;
+
+import io.github.sirfaizdat.prison.mines.Mine;
 
 /**
- * Represents Prison's configuration.
- * Contains all of the keys and their default values.
+ * A trigger triggers a mine reset when a certain condition is met.
  *
  * @author SirFaizdat
  * @since 3.0
  */
-public class Configuration {
+public interface Trigger {
 
-    public static final int VERSION = 0; // For everyone to reference
-    public int version = VERSION; // For the configuration file to store
+    /**
+     * @param mine The mine to be reset
+     * @return True if the mine should reset, false otherwise
+     */
+    boolean shouldReset(Mine mine);
 
-    // Entries
-
-    public String defaultResetMethod = "test";
-    public String defaultTrigger = "time";
-    public long triggerCheckTimeTicks = 20L;
+    /**
+     * @return A user-friendly name for this trigger
+     */
+    String name();
 
 }
