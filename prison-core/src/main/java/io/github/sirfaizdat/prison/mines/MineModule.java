@@ -40,6 +40,8 @@ import java.util.List;
  */
 public class MineModule extends Module {
 
+    // TODO Add reset messages and reset warnings
+
     private List<Mine> mines;
     private List<ResetMethod> resetMethods;
     private List<Trigger> triggers;

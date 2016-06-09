@@ -28,6 +28,9 @@ import io.github.sirfaizdat.prison.mines.ResetMethod;
  * @author SirFaizdat
  */
 public class ResetMethodTest implements ResetMethod {
+
+    // TODO Add mine compositions
+
     @Override
     public void run(Mine mine) {
         int minX = mine.getStart().getBlockX();

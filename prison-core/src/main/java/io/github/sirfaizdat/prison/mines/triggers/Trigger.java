@@ -21,7 +21,10 @@ package io.github.sirfaizdat.prison.mines.triggers;
 import io.github.sirfaizdat.prison.mines.Mine;
 
 /**
+ * Triggers tell mines to reset when a certain criteria is met.
+ *
  * @author SirFaizdat
+ * @since 3.0
  */
 public interface Trigger {
 

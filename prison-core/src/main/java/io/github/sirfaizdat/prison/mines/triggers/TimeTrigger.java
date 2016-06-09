@@ -25,7 +25,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * A trigger that resets a mine after an amount of seconds.
+ *
  * @author SirFaizdat
+ * @since 3.0
  */
 public class TimeTrigger implements Trigger {
 

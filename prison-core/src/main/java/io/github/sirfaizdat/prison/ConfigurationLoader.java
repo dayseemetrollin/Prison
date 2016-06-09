@@ -77,6 +77,7 @@ public class ConfigurationLoader {
 
             readConfiguration(json);
         } catch (IOException e) {
+            // TODO Perhaps make a better logger with unified alerts and logs?
             Prison.instance.getAlerts().alert("&c&lAlert: &7Failed to load the configuration file. &8Check the console for details.");
             Prison.instance.getPlatform().log("&c&lError: &7Failed to load the configuration file.");
             e.printStackTrace();
@@ -87,6 +88,10 @@ public class ConfigurationLoader {
     public Configuration getConfiguration() {
         return configuration;
     }
+
+    // -------------------------------------------- //
+    // Configuration IO steps
+    // -------------------------------------------- //
 
     private void writeConfiguration() throws IOException {
         configFile.createNewFile();
