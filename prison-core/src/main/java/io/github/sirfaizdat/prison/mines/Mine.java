@@ -39,8 +39,9 @@ public class Mine {
     private World world;
     private Location start, end;
     private ResetMethod resetMethod;
-    private Map<String, String> extraData;
     private Map<Block, Double> composition;
+    private String triggerName;
+    private double resetInterval; // Stores time interval for TimeTrigger, and percentage for PercentTrigger
 
     public Mine(String name, World world, Location start, Location end, ResetMethod resetMethod) {
         this.name = name;
@@ -49,7 +50,6 @@ public class Mine {
         this.end = end;
         this.resetMethod = resetMethod;
         this.composition = new HashMap<>();
-        this.extraData = new HashMap<>();
     }
 
     public void save(File file) throws IOException {
@@ -109,17 +109,20 @@ public class Mine {
         this.composition.remove(block);
     }
 
-    public Map<String, String> getExtraData() {
-        if(extraData == null) extraData = new HashMap<>();
-        return extraData;
+    public String getTriggerName() {
+        return triggerName;
     }
 
-    public void addExtraData(String key, String value) {
-        extraData.put(key, value);
+    public void setTriggerName(String triggerName) {
+        this.triggerName = triggerName;
     }
 
-    public void removeExtraData(String key) {
-        extraData.remove(key);
+    public double getResetInterval() {
+        return resetInterval;
+    }
+
+    public void setResetInterval(double resetInterval) {
+        this.resetInterval = resetInterval;
     }
 
     @Override
@@ -129,23 +132,30 @@ public class Mine {
 
         Mine mine = (Mine) o;
 
+        if (Double.compare(mine.resetInterval, resetInterval) != 0) return false;
         if (!name.equals(mine.name)) return false;
-        if (!world.equals(mine.world)) return false;
+        if (world != null ? !world.equals(mine.world) : mine.world != null) return false;
         if (!start.equals(mine.start)) return false;
         if (!end.equals(mine.end)) return false;
         if (!resetMethod.equals(mine.resetMethod)) return false;
-        return composition != null ? composition.equals(mine.composition) : mine.composition == null;
+        if (!composition.equals(mine.composition)) return false;
+        return triggerName.equals(mine.triggerName);
 
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + world.hashCode();
+        int result;
+        long temp;
+        result = name.hashCode();
+        result = 31 * result + (world != null ? world.hashCode() : 0);
         result = 31 * result + start.hashCode();
         result = 31 * result + end.hashCode();
         result = 31 * result + resetMethod.hashCode();
-        result = 31 * result + (composition != null ? composition.hashCode() : 0);
+        result = 31 * result + composition.hashCode();
+        result = 31 * result + triggerName.hashCode();
+        temp = Double.doubleToLongBits(resetInterval);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
@@ -156,8 +166,10 @@ public class Mine {
                 ", world=" + world +
                 ", start=" + start +
                 ", end=" + end +
-                ", resetMethod=" + resetMethod.name() +
+                ", resetMethod=" + resetMethod +
                 ", composition=" + composition.size() +
+                ", triggerName='" + triggerName + '\'' +
+                ", resetInterval=" + resetInterval +
                 '}';
     }
 

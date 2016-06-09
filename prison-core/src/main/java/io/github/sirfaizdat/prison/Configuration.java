@@ -21,6 +21,8 @@ package io.github.sirfaizdat.prison;
 /**
  * Represents Prison's configuration.
  * Contains all of the keys and their default values.
+ * Every time a new value is added to a production version (i.e. public release),
+ * the VERSION constant must be incremented by one to ensure the configuration will be regenerated.
  *
  * @author SirFaizdat
  * @since 3.0
@@ -34,6 +36,6 @@ public class Configuration {
 
     public String defaultResetMethod = "test";
     public String defaultTrigger = "time";
-    public long triggerCheckTimeTicks = 20L;
+    public double defaultResetInterval = 300;
 
 }

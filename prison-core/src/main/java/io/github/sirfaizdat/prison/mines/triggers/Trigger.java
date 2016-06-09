@@ -16,26 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.sirfaizdat.prison.mines.trigger;
+package io.github.sirfaizdat.prison.mines.triggers;
 
 import io.github.sirfaizdat.prison.mines.Mine;
 
 /**
- * A trigger triggers a mine reset when a certain condition is met.
- *
  * @author SirFaizdat
- * @since 3.0
  */
 public interface Trigger {
 
     /**
-     * @param mine The mine to be reset
-     * @return True if the mine should reset, false otherwise
+     * Tell the trigger that a certain mine should be triggered by it.
+     *
+     * @param mine The {@link Mine} to register
      */
-    boolean shouldReset(Mine mine);
+    void register(Mine mine);
 
     /**
-     * @return A user-friendly name for this trigger
+     * Tell the trigger that a certain mine is no longer triggered by it.
+     *
+     * @param mine The {@link Mine} to register
+     */
+    void unregister(Mine mine);
+
+    /**
+     * Checks if the mine should be reset. If it should be reset, it is reset.
+     * Called every second, asynchronously.
+     *
+     * @param mine The {@link Mine} to check on
+     */
+    void trigger(Mine mine);
+
+    /**
+     * A human-readable name for this trigger.
      */
     String name();
 

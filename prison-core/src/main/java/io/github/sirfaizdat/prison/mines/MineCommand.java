@@ -83,31 +83,4 @@ public class MineCommand {
         sender.sendMessage("&7Reset the mine with method &3" + resetMethod.name() + " &7.");
     }
 
-    @Command(
-            identifier = "mines get",
-            description = "Retrieve a property from a mine.",
-            onlyPlayers = false,
-            permissions = "mines.manage"
-    )
-    public void getValue(CommandSender sender, @Arg(name = "name") Mine mine, @Arg(name = "property") String property) {
-        sender.sendMessage(TextUtils.parse("&7The value of &b%s&7 is &b%s&7.", property, mine.getExtraData().get(property)));
-    }
-
-    @Command(
-            identifier = "mines set",
-            description = "Set a property for a mine.",
-            onlyPlayers = false,
-            permissions = "mines.manage"
-    )
-    public void setValue(CommandSender sender, @Arg(name = "name") Mine mine, @Arg(name = "property") String property, @Arg(name = "value") String value) {
-        mine.addExtraData(property, value);
-        try {
-            mine.save(mineModule.getMineFile(mine.getName()));
-            sender.sendMessage(TextUtils.parse("&7Set &b%s &7to &b%s&7.", property, value));
-        } catch (IOException e) {
-            sender.sendMessage(TextUtils.parse("&c&lOops! &7The mine failed to save. &8Check the console for details."));
-            e.printStackTrace();
-        }
-    }
-
 }

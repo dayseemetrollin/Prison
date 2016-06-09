@@ -24,8 +24,8 @@ import io.github.sirfaizdat.prison.Prison;
 import io.github.sirfaizdat.prison.internal.modules.Module;
 import io.github.sirfaizdat.prison.internal.world.World;
 import io.github.sirfaizdat.prison.mines.methods.ResetMethodTest;
-import io.github.sirfaizdat.prison.mines.trigger.TimeTrigger;
-import io.github.sirfaizdat.prison.mines.trigger.Trigger;
+import io.github.sirfaizdat.prison.mines.triggers.TimeTrigger;
+import io.github.sirfaizdat.prison.mines.triggers.Trigger;
 import io.github.sirfaizdat.prison.utils.adapters.AdapterResetMethod;
 import io.github.sirfaizdat.prison.utils.adapters.AdapterWorld;
 
@@ -69,16 +69,9 @@ public class MineModule extends Module {
         addTrigger(new TimeTrigger());
         loadAll();
 
-        Prison.instance.getPlatform().getScheduler().scheduleAsyncRepeating(
-                Prison.instance.getConfiguration().triggerCheckTimeTicks,
-                Prison.instance.getConfiguration().triggerCheckTimeTicks,
-                () -> {
-                    for(Mine mine : mines) {
-                        Trigger trigger = getTrigger(mine.getExtraData().get("trigger"));
-                        trigger.shouldReset(mine);
-                    }
-                }
-        );
+        Prison.instance.getPlatform().getScheduler().scheduleAsyncRepeating(20L, 20L, () -> {
+            for(Mine mine : mines) getTrigger(mine.getTriggerName()).trigger(mine);
+        });
     }
 
     private void loadAll() {
@@ -90,18 +83,29 @@ public class MineModule extends Module {
             for (File file : files) {
                 String json = new String(Files.readAllBytes(file.toPath()));
                 Mine m = gson.fromJson(json, Mine.class);
-
-                // Default extra data
-                if(!m.getExtraData().containsKey("trigger")) {
-                    m.addExtraData("trigger", Prison.instance.getConfiguration().defaultTrigger);
-                    m.save(file);
-                }
-
+                if (m.getTriggerName() == null || getTrigger(m.getTriggerName()) == null) setAsDefaultTrigger(m);
+                getTrigger(m.getTriggerName()).register(m);
                 mines.add(m);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setAsDefaultTrigger(Mine mine) throws IOException {
+        // The default trigger specified in the config doesn't exist!
+        if (getTrigger(Prison.instance.getConfiguration().defaultTrigger) == null) {
+            mine.setTriggerName("time"); // Set to the time trigger (we know this one exists)
+            mine.setResetInterval(300); // 5 minutes
+            mine.save(getMineFile(mine.getName()));
+
+            Prison.instance.getAlerts().alert("&c&lAlert: &7The default trigger you set in your configuration &7&ldoes not exist&r&7!");
+            Prison.instance.getPlatform().log("&c&lError: &7The default trigger you set in your configuration &7&ldoes not exist&r&7!");
+            return;
+        }
+        mine.setTriggerName(Prison.instance.getConfiguration().defaultTrigger);
+        mine.setResetInterval(Prison.instance.getConfiguration().defaultResetInterval);
+        mine.save(getMineFile(mine.getName()));
     }
 
     @Override
@@ -124,6 +128,7 @@ public class MineModule extends Module {
 
     public void addMine(Mine mine) {
         if (mines.contains(mine)) return;
+        getTrigger(mine.getTriggerName()).register(mine);
         mines.add(mine);
     }
 
