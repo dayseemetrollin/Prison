@@ -17,9 +17,11 @@
  */
 
 /**
- * Contains the libraries which Prison utilizes.
- * More importantly, it contains the APIs which are implemented per-platform in their
- * respective modules.
+ * Since Prison supports multiple platforms, it is necessary for various interfaces
+ * to be provided so that the plugin can access game features and perform the same tasks with
+ * unlimited implementations. As long as the required data is given, Prison Core can be run on any platform,
+ * which is really cool.
+ *
  *
  * @author SirFaizdat
  * @since 3.0
