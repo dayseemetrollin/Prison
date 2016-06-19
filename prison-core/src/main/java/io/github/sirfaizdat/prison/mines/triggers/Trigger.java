@@ -47,8 +47,10 @@ public interface Trigger {
      * Called every second, asynchronously.
      *
      * @param mine The {@link Mine} to check on
+     * @return true if the mine reset, and false if it didn't. If this is true, then the
+     *
      */
-    void trigger(Mine mine);
+    boolean trigger(Mine mine);
 
     /**
      * A human-readable name for this trigger.

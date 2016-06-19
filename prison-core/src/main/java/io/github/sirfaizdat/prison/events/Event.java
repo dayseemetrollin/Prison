@@ -24,5 +24,5 @@ package io.github.sirfaizdat.prison.events;
  * @author SirFaizdat
  * @since 3.0
  */
-public interface Event {
+public abstract class Event {
 }

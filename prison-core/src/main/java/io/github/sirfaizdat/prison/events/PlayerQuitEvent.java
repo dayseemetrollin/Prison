@@ -18,30 +18,20 @@
 
 package io.github.sirfaizdat.prison.events;
 
-import io.github.sirfaizdat.prison.internal.modules.Module;
+import io.github.sirfaizdat.prison.internal.entity.Player;
 
 /**
- * Fires when a module fails to start.
- *
  * @author SirFaizdat
- * @since 3.0
  */
-public class ModuleFailEvent extends Event {
+public class PlayerQuitEvent extends Event {
 
-    private Module module;
-    private String failReason;
+    private Player player;
 
-    public ModuleFailEvent(Module module, String failReason) {
-        this.module = module;
-        this.failReason = failReason;
+    public PlayerQuitEvent(Player player) {
+        this.player = player;
     }
 
-    public Module getModule() {
-        return module;
+    public Player getPlayer() {
+        return player;
     }
-
-    public String getFailReason() {
-        return failReason;
-    }
-
 }

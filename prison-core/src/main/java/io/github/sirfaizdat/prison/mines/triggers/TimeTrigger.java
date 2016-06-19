@@ -47,12 +47,12 @@ public class TimeTrigger implements Trigger {
     }
 
     @Override
-    public void trigger(Mine mine) {
+    public boolean trigger(Mine mine) {
         // Since the mine's reset interval can change at runtime,
         // it's important to check for an illegal value and correct it.
         if (mines.get(mine) > mine.getResetInterval()) {
             mines.put(mine, mine.getResetInterval());
-            return;
+            return false;
         }
 
         mines.put(mine, mines.get(mine) - 1); // Update the entry
@@ -61,7 +61,9 @@ public class TimeTrigger implements Trigger {
         if (mines.get(mine) <= 0) {
             Prison.instance.getPlatform().getScheduler().scheduleSync(0, () -> mine.getResetMethod().run(mine)); // Mines must be reset synchronously, and we're in an async thread
             mines.put(mine, mine.getResetInterval());
+            return true;
         }
+        return false;
     }
 
     @Override

@@ -18,9 +18,11 @@
 
 package io.github.sirfaizdat.prison.spigot;
 
-import io.github.sirfaizdat.prison.internal.events.EventData;
+import io.github.sirfaizdat.prison.events.Event;
+import io.github.sirfaizdat.prison.events.MineResetEvent;
+import io.github.sirfaizdat.prison.events.ModuleFailEvent;
 import io.github.sirfaizdat.prison.internal.events.EventListener;
-import io.github.sirfaizdat.prison.internal.events.EventType;
+import io.github.sirfaizdat.prison.spigot.events.SpigotMineResetEvent;
 import io.github.sirfaizdat.prison.spigot.events.SpigotModuleFailEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,49 +41,57 @@ import java.util.Map;
  */
 public class SpigotListener implements Listener {
 
+    /*
+     * You are not expected to understand the following code, but I'll try to explain it as best as I can.
+     *
+     * This class exists to call the prison-core EventListeners whenever the event is fired through Bukkit's event system.
+     * Before the event reaches this stage, it has already been fired from Prison's event system to Bukkit's event system through the Platform's fire() method.
+     * This is basically responding to that firing. Here, the listeners are registered and stored by event class type. They're looped through and called, and given new instances of
+     * Prison's events so that they can use them platform independently.
+     */
+
     SpigotPrison spigotPrison;
-    Map<EventType, List<EventListener>> listeners = new HashMap<>();
+    Map<Class<? extends Event>, List<EventListener>> listeners = new HashMap<>();
 
     public SpigotListener(SpigotPrison spigotPrison) {
         this.spigotPrison = spigotPrison;
         spigotPrison.getServer().getPluginManager().registerEvents(this, spigotPrison);
     }
 
-    public void register(EventType type, EventListener listener) {
+    public void register(Event event, EventListener listener) {
         // Create the list if it's not already there.
-        if (!listeners.containsKey(type)) {
-            listeners.put(type, Arrays.asList(listener));
+        if (!listeners.containsKey(event.getClass())) {
+            listeners.put(event.getClass(), Arrays.asList(listener));
             return;
         }
         // Add it and store it
-        List<EventListener> listenerList = listeners.get(type);
+        List<EventListener> listenerList = listeners.get(event.getClass());
         listenerList.add(listener);
-        listeners.put(type, listenerList);
+        listeners.put(event.getClass(), listenerList);
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if (!listeners.containsKey(EventType.PLAYER_JOIN)) return;
-        EventData data = new EventData();
-        data.put("player", spigotPrison.platform.getPlayer(e.getPlayer().getUniqueId()));
-        listeners.get(EventType.PLAYER_JOIN).forEach(eventListener -> eventListener.handle(data));
+        if (!listeners.containsKey(io.github.sirfaizdat.prison.events.PlayerJoinEvent.class)) return;
+        listeners.get(io.github.sirfaizdat.prison.events.PlayerJoinEvent.class).forEach(eventListener -> eventListener.handle(new io.github.sirfaizdat.prison.events.PlayerJoinEvent(new SpigotPlayer(e.getPlayer()))));
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        if (!listeners.containsKey(EventType.PLAYER_QUIT)) return;
-        EventData data = new EventData();
-        data.put("player", e.getPlayer());
-        listeners.get(EventType.PLAYER_QUIT).forEach(eventListener -> eventListener.handle(data));
+        if (!listeners.containsKey(io.github.sirfaizdat.prison.events.PlayerQuitEvent.class)) return;
+        listeners.get(io.github.sirfaizdat.prison.events.PlayerQuitEvent.class).forEach(eventListener -> eventListener.handle(new io.github.sirfaizdat.prison.events.PlayerQuitEvent(new SpigotPlayer(e.getPlayer()))));
     }
 
     @EventHandler
     public void onModuleFail(SpigotModuleFailEvent e) {
-        if (!listeners.containsKey(EventType.MODULE_FAIL)) return;
-        EventData data = new EventData();
-        data.put("module", e.getModule());
-        data.put("reason", e.getFailReason());
-        listeners.get(EventType.MODULE_FAIL).forEach(eventListener -> eventListener.handle(data));
+        if (!listeners.containsKey(ModuleFailEvent.class)) return;
+        listeners.get(ModuleFailEvent.class).forEach(eventListener -> eventListener.handle(new ModuleFailEvent(e.getModule(), e.getFailReason())));
+    }
+
+    @EventHandler
+    public void onMineReset(SpigotMineResetEvent e) {
+        if (!listeners.containsKey(MineResetEvent.class)) return;
+        listeners.get(MineResetEvent.class).forEach(eventListener -> eventListener.handle(new MineResetEvent(e.getMine())));
     }
 
 }

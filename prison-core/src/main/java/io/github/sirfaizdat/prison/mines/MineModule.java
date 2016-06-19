@@ -21,6 +21,7 @@ package io.github.sirfaizdat.prison.mines;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.sirfaizdat.prison.Prison;
+import io.github.sirfaizdat.prison.events.MineResetEvent;
 import io.github.sirfaizdat.prison.internal.modules.Module;
 import io.github.sirfaizdat.prison.internal.world.World;
 import io.github.sirfaizdat.prison.mines.methods.ResetMethodTest;
@@ -72,7 +73,8 @@ public class MineModule extends Module {
         loadAll();
 
         Prison.instance.getPlatform().getScheduler().scheduleAsyncRepeating(20L, 20L, () -> {
-            for(Mine mine : mines) getTrigger(mine.getTriggerName()).trigger(mine);
+            for(Mine mine : mines)
+                if(getTrigger(mine.getTriggerName()).trigger(mine)) Prison.instance.getPlatform().fire(new MineResetEvent(mine));
         });
     }
 
@@ -101,8 +103,8 @@ public class MineModule extends Module {
             mine.setResetInterval(300); // 5 minutes
             mine.save(getMineFile(mine.getName()));
 
-            Prison.instance.getAlerts().alert("&c&lAlert: &7The default trigger you set in your configuration &7&ldoes not exist&r&7!");
-            Prison.instance.getPlatform().log("&c&lError: &7The default trigger you set in your configuration &7&ldoes not exist&r&7!");
+            Prison.instance.getAlerts().alert("&c&lAlert: &7The default trigger you set in your configuration &c&ldoes not exist&r&7!");
+            Prison.instance.getPlatform().log("&c&lError: &7The default trigger you set in your configuration &c&ldoes not exist&r&7!");
             return;
         }
         mine.setTriggerName(Prison.instance.getConfiguration().defaultTrigger);

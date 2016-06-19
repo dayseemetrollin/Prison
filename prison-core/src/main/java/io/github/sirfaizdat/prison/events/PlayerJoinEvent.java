@@ -23,7 +23,7 @@ import io.github.sirfaizdat.prison.internal.entity.Player;
 /**
  * @author SirFaizdat
  */
-public class PlayerJoinEvent implements Event {
+public class PlayerJoinEvent extends Event {
 
     private Player player;
 

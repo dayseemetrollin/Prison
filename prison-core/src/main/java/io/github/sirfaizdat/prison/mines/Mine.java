@@ -31,6 +31,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * This data class stores all the data for a mine.
+ * This class is what is serialized to and deserialized from JSON.
+ *
  * @author SirFaizdat
  */
 public class Mine {

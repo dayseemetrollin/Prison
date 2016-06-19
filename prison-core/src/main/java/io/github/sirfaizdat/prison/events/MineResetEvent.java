@@ -18,30 +18,23 @@
 
 package io.github.sirfaizdat.prison.events;
 
-import io.github.sirfaizdat.prison.internal.modules.Module;
+import io.github.sirfaizdat.prison.mines.Mine;
 
 /**
- * Fires when a module fails to start.
+ * Triggered when a {@link io.github.sirfaizdat.prison.mines.Mine} is reset.
  *
  * @author SirFaizdat
  * @since 3.0
  */
-public class ModuleFailEvent extends Event {
+public class MineResetEvent extends Event {
 
-    private Module module;
-    private String failReason;
+    private Mine mine;
 
-    public ModuleFailEvent(Module module, String failReason) {
-        this.module = module;
-        this.failReason = failReason;
+    public MineResetEvent(Mine mine) {
+        this.mine = mine;
     }
 
-    public Module getModule() {
-        return module;
+    public Mine getMine() {
+        return mine;
     }
-
-    public String getFailReason() {
-        return failReason;
-    }
-
 }

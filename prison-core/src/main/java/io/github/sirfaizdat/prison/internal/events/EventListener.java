@@ -18,6 +18,8 @@
 
 package io.github.sirfaizdat.prison.internal.events;
 
+import io.github.sirfaizdat.prison.events.Event;
+
 /**
  * The handle method will be run when the event this is registered for is called.
  *
@@ -26,6 +28,6 @@ package io.github.sirfaizdat.prison.internal.events;
  */
 public interface EventListener {
 
-    void handle(EventData data);
+    void handle(Event event);
 
 }
