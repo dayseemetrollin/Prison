@@ -128,6 +128,10 @@ public class Mine {
         this.resetInterval = resetInterval;
     }
 
+    public boolean isSync() {
+        return resetInterval == 0.0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -56,7 +56,7 @@ public class Prison {
     }
 
     public void cleanUp() {
-        moduleManager.unregisterAll();
+        moduleManager.disableAll();
     }
 
     // The getters and setters

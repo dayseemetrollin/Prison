@@ -19,6 +19,8 @@
 package io.github.sirfaizdat.prison.internal.modules;
 
 import io.github.sirfaizdat.prison.Prison;
+import io.github.sirfaizdat.prison.events.MineResetEvent;
+import io.github.sirfaizdat.prison.events.ModuleFailEvent;
 import io.github.sirfaizdat.prison.internal.events.EventListener;
 import io.github.sirfaizdat.prison.internal.events.EventType;
 import io.github.sirfaizdat.prison.utils.TextUtils;
@@ -42,7 +44,7 @@ public class ModuleManager {
     public ModuleManager() {
         modules = new ArrayList<>();
         failedModules = new HashMap<>();
-        Prison.instance.getPlatform().listen(EventType.MODULE_FAIL, onModuleFail());
+        Prison.instance.getPlatform().listen(ModuleFailEvent.class, onModuleFail());
     }
 
     public void register(Module m) {
@@ -75,13 +77,16 @@ public class ModuleManager {
         return null;
     }
 
+    public List<Module> getModules() {
+        return modules;
+    }
+
     private EventListener onModuleFail() {
-        return data -> {
-            Module module = (Module) data.get("module");
-            String failReason = (String) data.get("reason");
-            module.setEnabled(false);
-            failedModules.put(module, failReason);
-            Prison.instance.getAlerts().alert("&c&lAlert: &7Module " + module.getName() + " failed to enable. Reason: &c" + failReason + TextUtils.dotIfNotPresent(failReason, "&7"));
+        return event -> {
+            ModuleFailEvent e = (ModuleFailEvent) event;
+            e.getModule().setEnabled(false);
+            failedModules.put(e.getModule(), e.getFailReason());
+            Prison.instance.getAlerts().alert("&c&lAlert: &7Module " + e.getModule().getName() + " failed to enable. Reason: &c" + e.getFailReason() + TextUtils.dotIfNotPresent(e.getFailReason(), "&7"));
         };
     }
 

@@ -48,6 +48,7 @@ public class MineModule extends Module {
     private List<Trigger> triggers;
     private File minesFolder;
     private Gson gson;
+    private ResetMessageBroadcaster resetMessageBroadcaster;
 
     public MineModule() {
         super("Mines");
@@ -71,6 +72,8 @@ public class MineModule extends Module {
         addResetMethod(new ResetMethodTest());
         addTrigger(new TimeTrigger());
         loadAll();
+
+        resetMessageBroadcaster = new ResetMessageBroadcaster(this);
 
         Prison.instance.getPlatform().getScheduler().scheduleAsyncRepeating(20L, 20L, () -> {
             for(Mine mine : mines)
@@ -100,7 +103,7 @@ public class MineModule extends Module {
         // The default trigger specified in the config doesn't exist!
         if (getTrigger(Prison.instance.getConfiguration().defaultTrigger) == null) {
             mine.setTriggerName("time"); // Set to the time trigger (we know this one exists)
-            mine.setResetInterval(300); // 5 minutes
+            mine.setResetInterval(0.0); // Default
             mine.save(getMineFile(mine.getName()));
 
             Prison.instance.getAlerts().alert("&c&lAlert: &7The default trigger you set in your configuration &c&ldoes not exist&r&7!");
@@ -108,13 +111,20 @@ public class MineModule extends Module {
             return;
         }
         mine.setTriggerName(Prison.instance.getConfiguration().defaultTrigger);
-        mine.setResetInterval(Prison.instance.getConfiguration().defaultResetInterval);
+        mine.setResetInterval(0.0); // Default
         mine.save(getMineFile(mine.getName()));
     }
 
     @Override
     public void deinit() {
         mines.clear();
+    }
+
+    @Override
+    public void reload() {
+        resetMessageBroadcaster = new ResetMessageBroadcaster(this);
+        mines.clear();
+        loadAll();
     }
 
     public Gson getGson() {

@@ -40,7 +40,7 @@ public class Alerts {
     private List<String> alerts = new ArrayList<>();
 
     public Alerts() {
-        Prison.instance.getPlatform().listen(EventType.PLAYER_JOIN, onPlayerJoin());
+        Prison.instance.getPlatform().listen(PlayerJoinEvent.class, onPlayerJoin());
     }
 
     public void alert(String message, Object... format) {

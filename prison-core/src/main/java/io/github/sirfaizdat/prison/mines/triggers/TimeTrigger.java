@@ -37,7 +37,8 @@ public class TimeTrigger implements Trigger {
     @Override
     public void register(Mine mine) {
         if (mines.containsKey(mine)) return;
-        mines.put(mine, mine.getResetInterval());
+        // A reset interval of 0.0 indicates that the mine is using the default reset interval (i.e. synchronized)
+        mines.put(mine, mine.getResetInterval() == 0.0 ? Prison.instance.getConfiguration().defaultResetInterval : mine.getResetInterval());
     }
 
     @Override
@@ -48,10 +49,14 @@ public class TimeTrigger implements Trigger {
 
     @Override
     public boolean trigger(Mine mine) {
+        // A reset interval of 0.0 indicates that the mine is using the default reset interval (i.e. synchronized)
+        double resetInterval = mine.getResetInterval();
+        if(resetInterval == 0.0) resetInterval = Prison.instance.getConfiguration().defaultResetInterval;
+
         // Since the mine's reset interval can change at runtime,
         // it's important to check for an illegal value and correct it.
-        if (mines.get(mine) > mine.getResetInterval()) {
-            mines.put(mine, mine.getResetInterval());
+        if (mines.get(mine) > resetInterval) {
+            mines.put(mine, resetInterval);
             return false;
         }
 
@@ -60,7 +65,9 @@ public class TimeTrigger implements Trigger {
         // Reset the mine if it's time
         if (mines.get(mine) <= 0) {
             Prison.instance.getPlatform().getScheduler().scheduleSync(0, () -> mine.getResetMethod().run(mine)); // Mines must be reset synchronously, and we're in an async thread
-            mines.put(mine, mine.getResetInterval());
+
+            // A reset interval of 0.0 indicates that the mine is using the default reset interval (i.e. synchronized)
+            mines.put(mine, mine.getResetInterval() == 0.0 ? Prison.instance.getConfiguration().defaultResetInterval : mine.getResetInterval());
             return true;
         }
         return false;

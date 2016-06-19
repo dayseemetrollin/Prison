@@ -19,6 +19,7 @@
 package io.github.sirfaizdat.prison.spigot;
 
 import io.github.sirfaizdat.prison.events.Event;
+import io.github.sirfaizdat.prison.events.MineResetEvent;
 import io.github.sirfaizdat.prison.events.ModuleFailEvent;
 import io.github.sirfaizdat.prison.internal.Platform;
 import io.github.sirfaizdat.prison.internal.Scheduler;
@@ -28,6 +29,7 @@ import io.github.sirfaizdat.prison.internal.events.EventListener;
 import io.github.sirfaizdat.prison.internal.events.EventType;
 import io.github.sirfaizdat.prison.internal.integration.SelectionIntegration;
 import io.github.sirfaizdat.prison.internal.world.World;
+import io.github.sirfaizdat.prison.spigot.events.SpigotMineResetEvent;
 import io.github.sirfaizdat.prison.spigot.events.SpigotModuleFailEvent;
 import io.github.sirfaizdat.prison.spigot.integration.WorldEditIntegration;
 import io.github.sirfaizdat.prison.utils.ChatColor;
@@ -60,14 +62,18 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
-    public void listen(EventType type, EventListener runnable) {
-        spigotPrison.listener.register(type, runnable);
+    public void listen(Class<? extends Event> event, EventListener runnable) {
+        spigotPrison.listener.register(event, runnable);
     }
 
     @Override
     public void fire(Event event) {
-        if(event instanceof ModuleFailEvent) Bukkit.getServer().getPluginManager().callEvent(new SpigotModuleFailEvent((ModuleFailEvent) event));
-        else log("&c&lError: &7Core event " + event.getClass().getName() + " attempted to fire, but the implementation does not support it!");
+        if (event instanceof ModuleFailEvent)
+            Bukkit.getServer().getPluginManager().callEvent(new SpigotModuleFailEvent((ModuleFailEvent) event));
+        if (event instanceof MineResetEvent)
+            Bukkit.getServer().getPluginManager().callEvent(new SpigotMineResetEvent((MineResetEvent) event));
+        else
+            log("&c&lError: &7Core event " + event.getClass().getName() + " attempted to fire, but the implementation does not support it!");
     }
 
     @Override
@@ -75,7 +81,8 @@ public class SpigotPlatform implements Platform {
         spigotPrison.commandMap.register(command.getLabel(), "prison", new Command(command.getLabel(), command.getDescription(), command.getUsage(), Arrays.asList()) {
             @Override
             public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-                if(sender instanceof org.bukkit.entity.Player) return spigotPrison.prison.getCommandHandler().onCommand(new SpigotPlayer((org.bukkit.entity.Player) sender), command, commandLabel, args);
+                if (sender instanceof org.bukkit.entity.Player)
+                    return spigotPrison.prison.getCommandHandler().onCommand(new SpigotPlayer((org.bukkit.entity.Player) sender), command, commandLabel, args);
                 return spigotPrison.prison.getCommandHandler().onCommand(new SpigotCommandSender(sender), command, commandLabel, args);
             }
         });
@@ -89,6 +96,7 @@ public class SpigotPlatform implements Platform {
 
     @Override
     public void reload() {
+        Bukkit.getServer().getScheduler().cancelTasks(spigotPrison);
     }
 
     @Override
@@ -130,6 +138,11 @@ public class SpigotPlatform implements Platform {
     @Override
     public String getPluginVersion() {
         return spigotPrison.getDescription().getVersion();
+    }
+
+    @Override
+    public String getPlatformName() {
+        return "Spigot";
     }
 
     @Override

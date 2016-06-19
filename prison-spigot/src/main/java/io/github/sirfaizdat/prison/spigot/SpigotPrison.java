@@ -43,6 +43,11 @@ public class SpigotPrison extends JavaPlugin {
     SpigotScheduler scheduler;
 
     @Override
+    public void onLoad() {
+        if(!getDataFolder().exists()) getDataFolder().mkdir();
+    }
+
+    @Override
     public void onEnable() {
         initCommandMap();
         scheduler = new SpigotScheduler(this);

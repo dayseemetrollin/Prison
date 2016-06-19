@@ -29,10 +29,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Listens for various events, and calls the {@link Runnable}s registered by prison-core when necessary.
@@ -51,23 +48,25 @@ public class SpigotListener implements Listener {
      */
 
     SpigotPrison spigotPrison;
-    Map<Class<? extends Event>, List<EventListener>> listeners = new HashMap<>();
+    Map<Class<? extends Event>, ArrayList<EventListener>> listeners = new HashMap<>();
 
     public SpigotListener(SpigotPrison spigotPrison) {
         this.spigotPrison = spigotPrison;
         spigotPrison.getServer().getPluginManager().registerEvents(this, spigotPrison);
     }
 
-    public void register(Event event, EventListener listener) {
+    public void register(Class<? extends Event> event, EventListener listener) {
         // Create the list if it's not already there.
-        if (!listeners.containsKey(event.getClass())) {
-            listeners.put(event.getClass(), Arrays.asList(listener));
+        if (!listeners.containsKey(event)) {
+            ArrayList<EventListener> list = new ArrayList<>();
+            list.add(listener);
+            listeners.put(event, list);
             return;
         }
         // Add it and store it
-        List<EventListener> listenerList = listeners.get(event.getClass());
+        ArrayList<EventListener> listenerList = listeners.get(event);
         listenerList.add(listener);
-        listeners.put(event.getClass(), listenerList);
+        listeners.put(event, listenerList);
     }
 
     @EventHandler

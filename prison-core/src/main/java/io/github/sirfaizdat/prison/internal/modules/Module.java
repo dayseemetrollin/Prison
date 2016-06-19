@@ -43,6 +43,8 @@ public abstract class Module {
 
     public abstract void deinit();
 
+    public void reload() {}
+
     public void fail(String failReason) {
         Prison.instance.getPlatform().fire(new ModuleFailEvent(this, failReason));
         setEnabled(false);

@@ -18,6 +18,9 @@
 
 package io.github.sirfaizdat.prison;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents Prison's configuration. Contains all of the keys and their default values.
  * Every time a new value is added to a production version (i.e. public release),
@@ -28,13 +31,15 @@ package io.github.sirfaizdat.prison;
  */
 public class Configuration {
 
-    public static final int VERSION = 0; // For everyone to reference
+    public static final int VERSION = 1; // For everyone to reference
     public int version = VERSION; // For the configuration file to store
 
     // Entries
 
     public String defaultResetMethod = "test";
     public String defaultTrigger = "time";
-    public double defaultResetInterval = 300;
+    public long defaultResetInterval = 300;
+    public boolean enableMultiworld = false;
+    public List<String> worlds = new ArrayList<>();
 
 }

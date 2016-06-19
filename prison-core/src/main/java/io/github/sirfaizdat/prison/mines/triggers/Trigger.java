@@ -47,7 +47,7 @@ public interface Trigger {
      * Called every second, asynchronously.
      *
      * @param mine The {@link Mine} to check on
-     * @return true if the mine reset, and false if it didn't. If this is true, then the
+     * @return true if the mine reset, and false if it didn't. If this is true, then the {@link io.github.sirfaizdat.prison.events.MineResetEvent} is fired.
      *
      */
     boolean trigger(Mine mine);

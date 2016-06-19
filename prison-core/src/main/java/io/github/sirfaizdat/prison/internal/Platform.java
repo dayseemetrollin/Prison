@@ -49,10 +49,10 @@ public interface Platform {
     /**
      * Registers a listener for an event type.
      *
-     * @param type     The {@link EventType} to listen for.
+     * @param event     The {@link Event} to listen for.
      * @param runnable The {@link EventListener} which is called when the event occurs.
      */
-    void listen(EventType type, EventListener runnable);
+    void listen(Class<? extends Event> event, EventListener runnable);
 
     /**
      * Fires an event.
@@ -133,6 +133,11 @@ public interface Platform {
      * Returns the version of Prison.
      */
     String getPluginVersion();
+
+    /**
+     * Returns the name of the platform.
+     */
+    String getPlatformName();
 
     // Integration
 

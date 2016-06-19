@@ -20,6 +20,7 @@ package io.github.sirfaizdat.prison;
 
 import io.github.sirfaizdat.prison.internal.commands.Command;
 import io.github.sirfaizdat.prison.internal.entity.CommandSender;
+import io.github.sirfaizdat.prison.internal.modules.Module;
 import io.github.sirfaizdat.prison.utils.ChatColor;
 import io.github.sirfaizdat.prison.internal.chat.FancyMessage;
 
@@ -65,8 +66,14 @@ public class PrisonCommand {
     public void reloadCommand(CommandSender sender) {
         sender.sendMessage("&8---- &3/prison reload &8----");
 
+        Prison.instance.getPlatform().reload();
+        sender.sendMessage("&7Reloaded platform &3" + Prison.instance.getPlatform().getPlatformName() + "&7.");
+
         ConfigurationLoader.getInstance().loadConfiguration();
-        sender.sendMessage("&7The configuration has been reloaded.");
+        sender.sendMessage("&7Reloaded configuration.");
+
+        Prison.instance.getModuleManager().getModules().forEach(Module::reload);
+        sender.sendMessage("&7Reloaded modules.");
 
         sender.sendMessage("&8---- &3/prison reload &8----");
     }

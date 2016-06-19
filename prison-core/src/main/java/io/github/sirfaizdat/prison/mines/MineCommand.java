@@ -58,6 +58,7 @@ public class MineCommand {
         }
 
         Mine mine = new Mine(name, sender.getLocation().getWorld(), selection.get().getMin(), selection.get().getMax(), resetMethod);
+        mine.setTriggerName(Prison.instance.getConfiguration().defaultTrigger);
 
         // Save it
         try {
